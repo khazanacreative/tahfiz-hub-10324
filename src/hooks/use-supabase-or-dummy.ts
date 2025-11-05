@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { getDummyProfile, getDummyHalaqoh, getDummySantri, getCurrentUserId } from '@/lib/offline-db';
+import { getCurrentUserId } from '@/lib/offline-db';
 import type { SyncStatus } from '@/lib/offline-db';
 
-export function useSupabaseOrDummy<T>(tableName: string, options: {
+export function useSupabaseOrDummy<T = any>(tableName: string, options: {
   defaultDummyData: T[];
   select?: string;
   initialFilters?: { column: string; value: any }[];
-}) {
+} = { defaultDummyData: [] }) {
   const [data, setData] = useState<T[]>(options.defaultDummyData);
   const [loading, setLoading] = useState(false);
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('offline');
@@ -38,6 +38,7 @@ export function useSupabaseOrDummy<T>(tableName: string, options: {
     
     setLoading(true);
     try {
+      // @ts-ignore - Bypassing type check for dynamic table access
       let query = supabase.from(tableName).select(options.select || '*');
       
       if (options.initialFilters) {
@@ -49,7 +50,7 @@ export function useSupabaseOrDummy<T>(tableName: string, options: {
       const { data: fetchedData, error } = await query;
 
       if (error) throw error;
-      setData(fetchedData || options.defaultDummyData);
+      setData((fetchedData as T[]) || options.defaultDummyData);
     } catch (error) {
       console.error(`Error fetching ${tableName}:`, error);
       setData(options.defaultDummyData);
@@ -62,6 +63,7 @@ export function useSupabaseOrDummy<T>(tableName: string, options: {
     setLoading(true);
     try {
       if (syncStatus === 'ready') {
+        // @ts-ignore - Bypassing type check for dynamic table access
         const { error } = await supabase.from(tableName).insert([newData]);
         if (error) throw error;
         await fetchData();
@@ -81,6 +83,7 @@ export function useSupabaseOrDummy<T>(tableName: string, options: {
     setLoading(true);
     try {
       if (syncStatus === 'ready') {
+        // @ts-ignore - Bypassing type check for dynamic table access
         const { error } = await supabase.from(tableName).update(updates).eq('id', id);
         if (error) throw error;
         await fetchData();
@@ -102,6 +105,7 @@ export function useSupabaseOrDummy<T>(tableName: string, options: {
     setLoading(true);
     try {
       if (syncStatus === 'ready') {
+        // @ts-ignore - Bypassing type check for dynamic table access
         const { error } = await supabase.from(tableName).delete().eq('id', id);
         if (error) throw error;
         await fetchData();

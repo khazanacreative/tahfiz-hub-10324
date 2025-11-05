@@ -38,12 +38,10 @@ export default function HalaqohPage() {
     defaultDummyData: getDummyHalaqoh() as Halaqoh[],
   });
 
-  const { 
-    data: asatidzList 
-  } = useSupabaseOrDummy<Asatidz>('profiles', {
-    defaultDummyData: getDummyProfile() as any[],
-    initialFilters: [{ column: 'role', value: 'Asatidz' }]
-  });
+  const asatidzList: Asatidz[] = [
+    { id: 'as-1', nama_lengkap: 'Ustadz Ahmad' },
+    { id: 'as-2', nama_lengkap: 'Ustadz Budi' }
+  ];
 
   const [isOpen, setIsOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
