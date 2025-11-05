@@ -78,6 +78,7 @@ export default function SantriPage() {
   }, []);
 
   const fetchSantri = async () => {
+    setLoading(true);
     try {
       // @ts-ignore - Bypassing type check
       const { data, error } = await supabase
@@ -87,14 +88,18 @@ export default function SantriPage() {
 
       if (error) {
         console.error("Error fetching santri:", error);
-        toast.error("Gagal memuat data santri");
+        // Keep dummy data on error
         return;
       }
 
-      setSantriList(data || []);
+      // Only update if we have data, otherwise keep dummy data
+      if (data && data.length > 0) {
+        setSantriList(data);
+      }
     } catch (err) {
       console.error("Unexpected error fetching santri:", err);
-      toast.error("Terjadi kesalahan saat memuat data santri");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -105,10 +110,8 @@ export default function SantriPage() {
       .select("id, nama_halaqoh")
       .order("nama_halaqoh");
 
-    if (error) {
-      toast.error("Gagal memuat data halaqoh");
-    } else {
-      setHalaqohList(data || []);
+    if (!error && data && data.length > 0) {
+      setHalaqohList(data);
     }
   };
 
@@ -302,24 +305,32 @@ export default function SantriPage() {
             <CardTitle>Daftar Santri</CardTitle>
           </CardHeader>
           <CardContent>
-            {loading ? (
-              <div className="flex justify-center py-6">
-                <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
-              </div>
-            ) : (
-              <Table>
-                <TableHeader>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>NIS</TableHead>
+                  <TableHead>Nama Santri</TableHead>
+                  <TableHead>Halaqoh</TableHead>
+                  <TableHead>Tanggal Masuk</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Aksi</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {loading ? (
                   <TableRow>
-                    <TableHead>NIS</TableHead>
-                    <TableHead>Nama Santri</TableHead>
-                    <TableHead>Halaqoh</TableHead>
-                    <TableHead>Tanggal Masuk</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Aksi</TableHead>
+                    <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                      Memuat data...
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {santriList.map((santri) => (
+                ) : santriList.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                      Belum ada data santri. Klik "Tambah Santri" untuk menambahkan data baru.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  santriList.map((santri) => (
                     <TableRow key={santri.id}>
                       <TableCell>{santri.nis}</TableCell>
                       <TableCell className="font-medium">{santri.nama_santri}</TableCell>
@@ -349,10 +360,10 @@ export default function SantriPage() {
                         </div>
                       </TableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
+                  ))
+                )}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       </div>

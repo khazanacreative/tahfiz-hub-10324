@@ -68,39 +68,45 @@ export default function AbsensiPage() {
         .select("id, id_santri, tanggal, status_kehadiran, keterangan")
         .order("tanggal", { ascending: false });
 
-      if (absensiError) throw absensiError;
+      if (absensiError) {
+        console.error("Error fetching absensi:", absensiError);
+        setLoading(false);
+        return;
+      }
 
       const rows = absensiData || [];
 
-      // Collect santri ids referenced in absensi
-      const santriIds = Array.from(new Set(rows.map((r: any) => r.id_santri).filter(Boolean)));
+      // Only fetch santri data if we have absensi records
+      if (rows.length > 0) {
+        // Collect santri ids referenced in absensi
+        const santriIds = Array.from(new Set(rows.map((r: any) => r.id_santri).filter(Boolean)));
 
-      let santriMap: Record<string, { nama_santri: string; nis: string }> = {};
-      if (santriIds.length > 0) {
-        // @ts-ignore - Bypassing type check
-        const { data: santriData } = await supabase
-          .from("santri")
-          .select("id, nama_santri, nis")
-          .in("id", santriIds);
+        let santriMap: Record<string, { nama_santri: string; nis: string }> = {};
+        if (santriIds.length > 0) {
+          // @ts-ignore - Bypassing type check
+          const { data: santriData } = await supabase
+            .from("santri")
+            .select("id, nama_santri, nis")
+            .in("id", santriIds);
 
-        (santriData || []).forEach((s: any) => {
-          santriMap[s.id] = { nama_santri: s.nama_santri, nis: s.nis };
-        });
+          (santriData || []).forEach((s: any) => {
+            santriMap[s.id] = { nama_santri: s.nama_santri, nis: s.nis };
+          });
+        }
+
+        const mapped = rows.map((r: any) => ({
+          id: r.id,
+          id_santri: r.id_santri,
+          tanggal: r.tanggal,
+          status_kehadiran: r.status_kehadiran,
+          keterangan: r.keterangan,
+          santri: r.id_santri ? santriMap[r.id_santri] || null : null,
+        } as Absensi));
+
+        setAbsensiList(mapped);
       }
-
-      const mapped = rows.map((r: any) => ({
-        id: r.id,
-        id_santri: r.id_santri,
-        tanggal: r.tanggal,
-        status_kehadiran: r.status_kehadiran,
-        keterangan: r.keterangan,
-        santri: r.id_santri ? santriMap[r.id_santri] || null : null,
-      } as Absensi));
-
-      setAbsensiList(mapped);
     } catch (err) {
       console.error(err);
-      toast.error("Gagal memuat data absensi");
     } finally {
       setLoading(false);
     }
@@ -114,10 +120,8 @@ export default function AbsensiPage() {
       .eq("status", "Aktif")
       .order("nama_santri");
 
-    if (error) {
-      toast.error("Gagal memuat data santri");
-    } else {
-      setSantriList(data || []);
+    if (!error && data && data.length > 0) {
+      setSantriList(data);
     }
   };
 
