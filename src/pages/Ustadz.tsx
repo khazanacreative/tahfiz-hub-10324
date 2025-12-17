@@ -1,214 +1,107 @@
-import { useState } from "react";
-import { Layout } from "@/components/Layout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { toast } from "sonner";
-import { Plus, Pencil, Trash2 } from "lucide-react";
-import { getDummyProfile } from "@/lib/offline-db";
-import { useSupabaseOrDummy } from "@/hooks/use-supabase-or-dummy";
+'use client';
 
-interface Ustadz {
-  id: string;
-  nama_lengkap: string;
-  username: string;
-  email: string;
-  no_hp: string | null;
-  aktif: boolean;
-}
+import { useState, useMemo } from 'react';
+import { useTahfidz } from '@/contexts/TahfidzContext';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { School, Users } from 'lucide-react';
+import TablePagination from '@/components/tahfidz/TablePagination';
 
 export default function UstadzPage() {
-  const [ustadzList, setUstadzList] = useState<Ustadz[]>([
-    { id: 'as-1', nama_lengkap: 'Ustadz Ahmad', username: 'ustadzahmad', email: 'ahmad@example.com', no_hp: '081234567890', aktif: true },
-    { id: 'as-2', nama_lengkap: 'Ustadz Budi', username: 'ustadzbudi', email: 'budi@example.com', no_hp: '081234567891', aktif: true }
-  ]);
-  const [loading, setLoading] = useState(false);
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [editId, setEditId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    nama_lengkap: "",
-    username: "",
-    email: "",
-    no_hp: "",
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      if (editId) {
-        toast.success("Data ustadz berhasil diperbarui");
-      } else {
-        toast.success("Ustadz baru berhasil ditambahkan");
-      }
-
-      setIsOpen(false);
-      resetForm();
-    } catch (error) {
-      console.error(error);
-      toast.error("Terjadi kesalahan saat menyimpan data");
-    }
-  };
-
-  const handleEdit = (ustadz: Ustadz) => {
-    setEditId(ustadz.id);
-    setFormData({
-      nama_lengkap: ustadz.nama_lengkap,
-      username: ustadz.username,
-      email: ustadz.email || "",
-      no_hp: ustadz.no_hp || "",
-    });
-    setIsOpen(true);
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm("Yakin ingin menghapus ustadz ini?")) return;
-
-    try {
-      toast.success("Ustadz berhasil dihapus");
-    } catch (error) {
-      toast.error("Gagal menghapus ustadz");
-    }
-  };
-
-  const resetForm = () => {
-    setEditId(null);
-    setFormData({ nama_lengkap: "", username: "", email: "", no_hp: "" });
-  };
+  const { data } = useTahfidz();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 10;
+  
+  const asatidzList = data.users.filter((u) => u.role === 'Asatidz');
+  
+  const totalPages = Math.ceil(asatidzList.length / itemsPerPage);
+  const paginatedAsatidz = asatidzList.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
-    <Layout>
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Data Ustadz</h1>
-            <p className="text-muted-foreground">Kelola data ustadz tahfidz</p>
-          </div>
-
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={resetForm}>
-                <Plus className="w-4 h-4 mr-2" /> Tambah Ustadz
-              </Button>
-            </DialogTrigger>
-
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>{editId ? "Edit Ustadz" : "Tambah Ustadz Baru"}</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Nama Lengkap</Label>
-                  <Input
-                    value={formData.nama_lengkap}
-                    onChange={(e) => setFormData({ ...formData, nama_lengkap: e.target.value })}
-                    placeholder="Masukkan nama lengkap"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Username</Label>
-                  <Input
-                    value={formData.username}
-                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                    placeholder="Masukkan username"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Email</Label>
-                  <Input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="Masukkan email"
-                    required
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label>No. HP</Label>
-                  <Input
-                    value={formData.no_hp}
-                    onChange={(e) => setFormData({ ...formData, no_hp: e.target.value })}
-                    placeholder="Masukkan nomor HP"
-                  />
-                </div>
-
-                <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
-                    Batal
-                  </Button>
-                  <Button type="submit" disabled={loading}>
-                    {loading ? "Menyimpan..." : "Simpan"}
-                  </Button>
-                </div>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        <div className="bg-card rounded-lg shadow">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nama Lengkap</TableHead>
-                <TableHead>Username</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>No. HP</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Aksi</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-4">
-                    Memuat data...
-                  </TableCell>
-                </TableRow>
-              ) : ustadzList.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-4">
-                    Belum ada data ustadz
-                  </TableCell>
-                </TableRow>
-              ) : (
-                ustadzList.map((u) => (
-                  <TableRow key={u.id}>
-                    <TableCell className="font-medium">{u.nama_lengkap}</TableCell>
-                    <TableCell>{u.username}</TableCell>
-                    <TableCell>{u.email}</TableCell>
-                    <TableCell>{u.no_hp || "-"}</TableCell>
-                    <TableCell>
-                      <span className={`px-2 py-1 rounded text-xs ${
-                        u.aktif ? 'bg-primary/10 text-primary' : 'bg-destructive/10 text-destructive'
-                      }`}>
-                        {u.aktif ? 'Aktif' : 'Nonaktif'}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button size="icon" variant="ghost" onClick={() => handleEdit(u)}>
-                          <Pencil className="w-4 h-4" />
-                        </Button>
-                        <Button size="icon" variant="ghost" onClick={() => handleDelete(u.id)}>
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </div>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">Data Ustadz</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">Daftar asatidz pembimbing tahfidz</p>
       </div>
-    </Layout>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {paginatedAsatidz.map((ustadz) => {
+          const halaqohBinaan = data.halaqoh.filter((h) => h.id_asatidz === ustadz.id);
+          const santriTotal = data.santri.filter((s) => 
+            halaqohBinaan.some((h) => h.id === s.id_halaqoh) && s.status === 'Aktif'
+          ).length;
+
+          return (
+            <Card key={ustadz.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader className="bg-gradient-to-r from-emerald-500 to-lime-500 text-white rounded-t-lg">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <CardTitle className="text-lg">{ustadz.nama_lengkap}</CardTitle>
+                    <p className="text-sm text-emerald-100 mt-1">{ustadz.email}</p>
+                  </div>
+                  <Badge variant={ustadz.aktif ? 'default' : 'secondary'} className="bg-white text-emerald-700">
+                    {ustadz.aktif ? 'Aktif' : 'Nonaktif'}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                    <span className="text-sm">📞</span>
+                    <span className="text-sm">{ustadz.no_hp}</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                    <School className="h-4 w-4 text-emerald-600" />
+                    <span className="text-sm">{halaqohBinaan.length} Halaqoh</span>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
+                    <Users className="h-4 w-4 text-emerald-600" />
+                    <span className="text-sm">{santriTotal} Santri</span>
+                  </div>
+
+                  {halaqohBinaan.length > 0 && (
+                    <div className="mt-3 pt-3 border-t">
+                      <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                        Halaqoh Binaan:
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {halaqohBinaan.map((h) => (
+                          <Badge key={h.id} variant="outline" className="text-xs">
+                            {h.nama_halaqoh}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
+
+        {paginatedAsatidz.length === 0 && (
+          <div className="col-span-full text-center py-12 text-gray-500">
+            Belum ada data ustadz
+          </div>
+        )}
+      </div>
+
+      {asatidzList.length > itemsPerPage && (
+        <div className="mt-6">
+          <TablePagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            totalItems={asatidzList.length}
+            itemsPerPage={itemsPerPage}
+          />
+        </div>
+      )}
+    </div>
   );
 }
