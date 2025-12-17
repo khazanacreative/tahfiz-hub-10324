@@ -1,9 +1,24 @@
-import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
+import React from 'react';
 
-const Collapsible = CollapsiblePrimitive.Root;
+type CollapsibleProps = React.PropsWithChildren<{
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}> & React.HTMLAttributes<HTMLDivElement>;
 
-const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger;
+type CollapsibleTriggerProps = React.PropsWithChildren<{
+  asChild?: boolean;
+}> & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const CollapsibleContent = CollapsiblePrimitive.CollapsibleContent;
+export const Collapsible: React.FC<CollapsibleProps> = ({ children, className = '', ...rest }) => (
+  <div className={`collapsible ${className}`} {...rest}>{children}</div>
+);
 
-export { Collapsible, CollapsibleTrigger, CollapsibleContent };
+export const CollapsibleContent: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className = '', ...rest }) => (
+  <div className={`collapsible-content ${className}`} {...rest}>{children}</div>
+);
+
+export const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({ children, className = '', ...rest }) => (
+  <button {...rest} className={`collapsible-trigger ${className}`}>{children}</button>
+);
+
+export default Collapsible;
