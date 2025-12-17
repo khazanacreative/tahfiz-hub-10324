@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,7 +20,6 @@ export default function Dashboard() {
   }, []);
 
   const fetchStats = async () => {
-    // @ts-ignore - Bypassing type check for dynamic table access
     const [santriRes, halaqohRes, setoranRes] = await Promise.all([
       supabase.from("santri").select("*", { count: "exact" }),
       supabase.from("halaqoh").select("*", { count: "exact" }),
@@ -29,7 +27,7 @@ export default function Dashboard() {
     ]);
 
     const avgKelancaran = setoranRes.data?.length
-      ? setoranRes.data.reduce((acc: number, curr: any) => acc + (curr.nilai_kelancaran || 0), 0) / setoranRes.data.length
+      ? setoranRes.data.reduce((acc, curr) => acc + (curr.nilai_kelancaran || 0), 0) / setoranRes.data.length
       : 0;
 
     setStats({
@@ -41,7 +39,7 @@ export default function Dashboard() {
 
     // Process chart data - group by juz
     const juzData: Record<number, number> = {};
-    setoranRes.data?.forEach((item: any) => {
+    setoranRes.data?.forEach((item) => {
       juzData[item.juz] = (juzData[item.juz] || 0) + 1;
     });
 

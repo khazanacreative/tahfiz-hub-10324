@@ -1,300 +1,375 @@
-'use client';
+import { useEffect, useState } from "react";
+import { Layout } from "@/components/Layout";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { toast } from "sonner";
+import { Plus, Pencil, Trash2 } from "lucide-react";
 
-import { useState, useMemo } from 'react';
-import { useTahfidz } from '@/contexts/TahfidzContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Edit, Trash2 } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
-import { toast } from 'sonner';
-import type { Penilaian } from '@/lib/tahfidz-types';
+interface Penilaian {
+  id: string;
+  id_santri: string;
+  id_asatidz: string;
+  tanggal_penilaian: string;
+  tajwid: number;
+  makharij: number;
+  kelancaran: number;
+  catatan?: string;
+  santri?: { nama_santri: string };
+  profiles?: { nama_lengkap: string };
+}
+
+interface Santri {
+  id: string;
+  nama_santri: string;
+}
 
 export default function PenilaianPage() {
-  const { data, currentUser, addPenilaian, updatePenilaian, deletePenilaian } = useTahfidz();
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [editingPenilaian, setEditingPenilaian] = useState<Penilaian | null>(null);
+  // Dummy data shown before Supabase is connected or when fetch fails
+  const DUMMY_SANTRI: Santri[] = [
+    { id: "s-1", nama_santri: "Ahmad Santri" },
+    { id: "s-2", nama_santri: "Budi Santri" },
+  ];
 
-  const [formData, setFormData] = useState<{
-    id_santri: string;
-    id_asatidz: string;
-    tanggal_penilaian: string;
-    catatan_tajwid: string;
-    catatan_fashahah: string;
-    kelancaran: number;
-    catatan_umum: string;
-  }>({
-    id_santri: '',
-    id_asatidz: currentUser?.id || '',
+  const DUMMY_PENILAIAN: Penilaian[] = [
+    {
+      id: "p-1",
+      id_santri: "s-1",
+      id_asatidz: "as-1",
+      tanggal_penilaian: "2025-01-01",
+      tajwid: 85,
+      makharij: 80,
+      kelancaran: 90,
+      catatan: "Perlu perbaikan pada mad wajib",
+      santri: { nama_santri: "Ahmad Santri" },
+      profiles: { nama_lengkap: "Ustadz Ahmad" }
+    },
+    {
+      id: "p-2",
+      id_santri: "s-2",
+      id_asatidz: "as-2",
+      tanggal_penilaian: "2025-01-02",
+      tajwid: 75,
+      makharij: 85,
+      kelancaran: 80,
+      catatan: "Sudah lebih lancar dari sebelumnya",
+      santri: { nama_santri: "Budi Santri" },
+      profiles: { nama_lengkap: "Ustadz Budi" }
+    },
+  ];
+
+  const [penilaianList, setPenilaianList] = useState<Penilaian[]>(DUMMY_PENILAIAN);
+  const [santriList, setSantriList] = useState<Santri[]>(DUMMY_SANTRI);
+  const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [editId, setEditId] = useState<string | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string>("as-1"); // Default dummy ID
+  
+  const [formData, setFormData] = useState({
+    id_santri: "",
     tanggal_penilaian: new Date().toISOString().split('T')[0],
-    catatan_tajwid: '',
-    catatan_fashahah: '',
-    kelancaran: 0,
-    catatan_umum: '',
+    tajwid: 80,
+    makharij: 80,
+    kelancaran: 80,
+    catatan: "",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
+  useEffect(() => {
+    getCurrentUser();
+    fetchPenilaian();
+    fetchSantri();
+  }, []);
 
-    if (!currentUser) {
-      toast.error('Anda harus login terlebih dahulu');
-      return;
-    }
-
-    if (!formData.id_santri) {
-      toast.error('Santri harus dipilih');
-      return;
-    }
-
-    // Set id_asatidz dari currentUser jika belum ada
-    const finalFormData = {
-      ...formData,
-      id_asatidz: formData.id_asatidz || currentUser.id,
-    };
-
-    if (!finalFormData.id_asatidz) {
-      toast.error('Data ustadz tidak valid');
-      return;
-    }
-
-    if (editingPenilaian) {
-      updatePenilaian(editingPenilaian.id, finalFormData);
-      toast.success('Penilaian berhasil diupdate');
-    } else {
-      addPenilaian(finalFormData);
-      toast.success('Penilaian berhasil ditambahkan');
-    }
-
-    setIsDialogOpen(false);
-    resetForm();
+  const getCurrentUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) setCurrentUserId(user.id);
   };
 
-  const handleEdit = (penilaian: Penilaian): void => {
-    setEditingPenilaian(penilaian);
+  const fetchPenilaian = async () => {
+    const { data, error } = await supabase
+      .from("penilaian")
+      .select(`
+        *,
+        santri (nama_santri),
+        profiles (nama_lengkap)
+      `)
+      .order("tanggal_penilaian", { ascending: false });
+
+    if (error) {
+      toast.error("Gagal memuat data penilaian");
+    } else {
+      setPenilaianList(data || []);
+    }
+  };
+
+  const fetchSantri = async () => {
+    const { data, error } = await supabase
+      .from("santri")
+      .select("id, nama_santri")
+      .eq("status", "Aktif")
+      .order("nama_santri");
+
+    if (error) {
+      toast.error("Gagal memuat data santri");
+    } else {
+      setSantriList(data || []);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const dataToSave = {
+        ...formData,
+        id_asatidz: currentUserId,
+      };
+
+      if (editId) {
+        const { error } = await supabase
+          .from("penilaian")
+          .update(dataToSave)
+          .eq("id", editId);
+
+        if (error) throw error;
+        toast.success("Penilaian berhasil diupdate");
+      } else {
+        const { error } = await supabase
+          .from("penilaian")
+          .insert([dataToSave]);
+
+        if (error) throw error;
+        toast.success("Penilaian berhasil ditambahkan");
+      }
+
+      setIsOpen(false);
+      resetForm();
+      fetchPenilaian();
+    } catch (error) {
+      toast.error("Gagal menyimpan penilaian");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEdit = (penilaian: Penilaian) => {
+    setEditId(penilaian.id);
     setFormData({
       id_santri: penilaian.id_santri,
-      id_asatidz: penilaian.id_asatidz,
       tanggal_penilaian: penilaian.tanggal_penilaian,
-      catatan_tajwid: penilaian.catatan_tajwid,
-      catatan_fashahah: penilaian.catatan_fashahah,
+      tajwid: penilaian.tajwid,
+      makharij: penilaian.makharij,
       kelancaran: penilaian.kelancaran,
-      catatan_umum: penilaian.catatan_umum,
+      catatan: penilaian.catatan || "",
     });
-    setIsDialogOpen(true);
+    setIsOpen(true);
   };
 
-  const handleDelete = (id: string): void => {
-    if (confirm('Yakin ingin menghapus penilaian ini?')) {
-      deletePenilaian(id);
-      toast.success('Penilaian berhasil dihapus');
+  const handleDelete = async (id: string) => {
+    if (!confirm("Yakin ingin menghapus penilaian ini?")) return;
+
+    const { error } = await supabase
+      .from("penilaian")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      toast.error("Gagal menghapus penilaian");
+    } else {
+      toast.success("Penilaian berhasil dihapus");
+      fetchPenilaian();
     }
   };
 
-  const resetForm = (): void => {
+  const resetForm = () => {
+    setEditId(null);
     setFormData({
-      id_santri: '',
-      id_asatidz: currentUser?.id || '',
+      id_santri: "",
       tanggal_penilaian: new Date().toISOString().split('T')[0],
-      catatan_tajwid: '',
-      catatan_fashahah: '',
-      kelancaran: 0,
-      catatan_umum: '',
+      tajwid: 80,
+      makharij: 80,
+      kelancaran: 80,
+      catatan: "",
     });
-    setEditingPenilaian(null);
   };
 
-  const sortedPenilaian = useMemo(() => 
-    [...data.penilaian].sort(
-      (a, b) => new Date(b.tanggal_penilaian).getTime() - new Date(a.tanggal_penilaian).getTime()
-    ), [data.penilaian]
-  );
+  const getRataRata = (tajwid: number, makharij: number, kelancaran: number) => {
+    return Math.round((tajwid + makharij + kelancaran) / 3);
+  };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">Penilaian & Evaluasi</h1>
-        <Dialog open={isDialogOpen} onOpenChange={(open) => {
-          setIsDialogOpen(open);
-          if (!open) resetForm();
-        }}>
-          <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-emerald-600 to-lime-600 hover:from-emerald-700 hover:to-lime-700">
-              <Plus className="h-4 w-4 mr-2" />
-              Tambah Penilaian
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>{editingPenilaian ? 'Edit' : 'Tambah'} Penilaian</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <Layout>
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Penilaian & Evaluasi</h1>
+            <p className="text-muted-foreground">Kelola penilaian santri</p>
+          </div>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={resetForm}>
+                <Plus className="w-4 h-4 mr-2" />
+                Tambah Penilaian
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{editId ? "Edit Penilaian" : "Tambah Penilaian"}</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="id_santri">Santri</Label>
-                  <Select
-                    value={formData.id_santri}
+                  <Label>Santri</Label>
+                  <Select 
+                    value={formData.id_santri} 
                     onValueChange={(value) => setFormData({ ...formData, id_santri: value })}
+                    required
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Pilih santri" />
+                      <SelectValue placeholder="Pilih Santri" />
                     </SelectTrigger>
                     <SelectContent>
-                      {data.santri.filter((s) => s.status === 'Aktif').length === 0 ? (
-                        <SelectItem value="" disabled>
-                          Tidak ada santri aktif
+                      {santriList.map((santri) => (
+                        <SelectItem key={santri.id} value={santri.id}>
+                          {santri.nama_santri}
                         </SelectItem>
-                      ) : (
-                        data.santri.filter((s) => s.status === 'Aktif').map((s) => (
-                          <SelectItem key={s.id} value={s.id}>
-                            {s.nama_santri}
-                          </SelectItem>
-                        ))
-                      )}
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="tanggal_penilaian">Tanggal Penilaian</Label>
+                  <Label>Tanggal Penilaian</Label>
                   <Input
-                    id="tanggal_penilaian"
                     type="date"
                     value={formData.tanggal_penilaian}
                     onChange={(e) => setFormData({ ...formData, tanggal_penilaian: e.target.value })}
+                    required
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="kelancaran">Kelancaran (0-100)</Label>
-                  <Input
-                    id="kelancaran"
-                    type="number"
-                    min="0"
-                    max="100"
-                    value={formData.kelancaran}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      const numValue = value === '' ? 0 : parseInt(value) || 0;
-                      setFormData({ ...formData, kelancaran: Math.min(100, Math.max(0, numValue)) });
-                    }}
-                  />
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="catatan_tajwid">Catatan Tajwid</Label>
-                  <Textarea
-                    id="catatan_tajwid"
-                    value={formData.catatan_tajwid}
-                    onChange={(e) => setFormData({ ...formData, catatan_tajwid: e.target.value })}
-                    placeholder="Contoh: Bacaan mad wajib sudah baik, qolqolah perlu diperbaiki..."
-                    rows={3}
-                  />
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="catatan_fashahah">Catatan Fashahah (Makharijul Huruf)</Label>
-                  <Textarea
-                    id="catatan_fashahah"
-                    value={formData.catatan_fashahah}
-                    onChange={(e) => setFormData({ ...formData, catatan_fashahah: e.target.value })}
-                    placeholder="Contoh: Huruf ث dan س perlu dibedakan, huruf ع sudah bagus..."
-                    rows={3}
-                  />
-                </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="catatan_umum">Catatan Umum</Label>
-                  <Textarea
-                    id="catatan_umum"
-                    value={formData.catatan_umum}
-                    onChange={(e) => setFormData({ ...formData, catatan_umum: e.target.value })}
-                    placeholder="Catatan evaluasi tambahan..."
-                    rows={2}
-                  />
-                </div>
-              </div>
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Batal
-                </Button>
-                <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
-                  Simpan
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
 
-      <Card>
-        <CardHeader />
-        <CardContent>
-          <div className="overflow-x-auto">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <Label>Tajwid (0-100)</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={formData.tajwid}
+                      onChange={(e) => setFormData({ ...formData, tajwid: parseInt(e.target.value) })}
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Makharij (0-100)</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={formData.makharij}
+                      onChange={(e) => setFormData({ ...formData, makharij: parseInt(e.target.value) })}
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Kelancaran (0-100)</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      max="100"
+                      value={formData.kelancaran}
+                      onChange={(e) => setFormData({ ...formData, kelancaran: parseInt(e.target.value) })}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Catatan Evaluasi</Label>
+                  <Textarea
+                    value={formData.catatan}
+                    onChange={(e) => setFormData({ ...formData, catatan: e.target.value })}
+                    placeholder="Catatan evaluasi..."
+                    rows={3}
+                  />
+                </div>
+
+                <div className="flex justify-end gap-2">
+                  <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
+                    Batal
+                  </Button>
+                  <Button type="submit" disabled={loading}>
+                    {loading ? "Menyimpan..." : "Simpan"}
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Daftar Penilaian</CardTitle>
+          </CardHeader>
+          <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Tanggal</TableHead>
                   <TableHead>Santri</TableHead>
+                  <TableHead>Tajwid</TableHead>
+                  <TableHead>Makharij</TableHead>
                   <TableHead>Kelancaran</TableHead>
-                  <TableHead>Catatan Tajwid</TableHead>
-                  <TableHead>Catatan Fashahah</TableHead>
-                  <TableHead>Catatan Umum</TableHead>
-                  <TableHead>Aksi</TableHead>
+                  <TableHead>Rata-rata</TableHead>
+                  <TableHead>Penilai</TableHead>
+                  <TableHead className="text-right">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sortedPenilaian.map((penilaian) => {
-                  const santri = data.santri.find((s) => s.id === penilaian.id_santri);
-                  
-                  return (
-                    <TableRow key={penilaian.id}>
-                      <TableCell>{new Date(penilaian.tanggal_penilaian).toLocaleDateString('id-ID')}</TableCell>
-                      <TableCell>{santri?.nama_santri || '-'}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <Progress value={penilaian.kelancaran} className="w-16" />
-                          <span className="font-semibold">{penilaian.kelancaran}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="max-w-xs">
-                        <p className="truncate text-sm">{penilaian.catatan_tajwid || '-'}</p>
-                      </TableCell>
-                      <TableCell className="max-w-xs">
-                        <p className="truncate text-sm">{penilaian.catatan_fashahah || '-'}</p>
-                      </TableCell>
-                      <TableCell className="max-w-xs">
-                        <p className="truncate text-sm">{penilaian.catatan_umum || '-'}</p>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="outline" onClick={() => handleEdit(penilaian)}>
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="text-red-600"
-                            onClick={() => handleDelete(penilaian.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-                {sortedPenilaian.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center text-gray-500 py-8">
-                      Tidak ada data penilaian
+                {penilaianList.map((nilai) => (
+                  <TableRow key={nilai.id}>
+                    <TableCell>{new Date(nilai.tanggal_penilaian).toLocaleDateString('id-ID')}</TableCell>
+                    <TableCell className="font-medium">{nilai.santri?.nama_santri || "-"}</TableCell>
+                    <TableCell>{nilai.tajwid}</TableCell>
+                    <TableCell>{nilai.makharij}</TableCell>
+                    <TableCell>{nilai.kelancaran}</TableCell>
+                    <TableCell className="font-semibold">
+                      {getRataRata(nilai.tajwid, nilai.makharij, nilai.kelancaran)}
+                    </TableCell>
+                    <TableCell>{nilai.profiles?.nama_lengkap || "-"}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={() => handleEdit(nilai)}
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={() => handleDelete(nilai.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
-                )}
+                ))}
               </TableBody>
             </Table>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+          </CardContent>
+        </Card>
+      </div>
+    </Layout>
   );
 }

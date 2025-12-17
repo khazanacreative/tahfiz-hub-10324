@@ -1,104 +1,73 @@
-# Sistem Tahfidz - Manajemen Hafalan Al-Quran
+# Welcome to your Lovable project
 
-Aplikasi web untuk mengelola hafalan Al-Quran dengan fitur lengkap untuk santri, ustadz, dan admin.
+## Project info
 
-## 🚀 Fitur Utama
+**URL**: https://lovable.dev/projects/f9a3c1e9-c66e-4c83-b1ca-7951f127d340
 
-- **Manajemen Santri**: Tambah, edit, hapus data santri
-- **Setoran Hafalan**: Rekam dan lacak progress hafalan
-- **Absensi**: Monitoring kehadiran setoran
-- **Penilaian**: Evaluasi dan penilaian hafalan
-- **Laporan**: Generate laporan progress dan statistik
-- **Multi-role**: Support untuk Admin, Ustadz, dan Santri
-- **Responsive UI**: Interface modern dengan dark/light mode
+## How can I edit this code?
 
-## 🛠️ Tech Stack
+There are several ways of editing your application.
 
-- **Framework**: Next.js 14
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS + shadcn/ui
-- **State Management**: React Context
-- **Icons**: Lucide React
-- **Charts**: Recharts
-- **Forms**: React Hook Form + Zod
+**Use Lovable**
 
-## 📦 Instalasi
+Simply visit the [Lovable Project](https://lovable.dev/projects/f9a3c1e9-c66e-4c83-b1ca-7951f127d340) and start prompting.
 
-1. Clone repository:
-```bash
-git clone <repository-url>
-cd sistem-tahfidz-ohara
-```
+Changes made via Lovable will be committed automatically to this repo.
 
-2. Install dependencies:
-```bash
-npm install
-```
+**Use your preferred IDE**
 
-3. Setup environment variables:
-```bash
-cp .env.example .env.local
-```
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-4. Jalankan development server:
-```bash
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+
+Follow these steps:
+
+```sh
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
+
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
+
+# Step 3: Install the necessary dependencies.
+npm i
+
+# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-Aplikasi akan berjalan di `http://localhost:3000`
+**Edit a file directly in GitHub**
 
-## 🔐 Demo Akun
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
 
-- **Admin**: `admin` / `admin123`
-- **Ustadz**: `ahmad` / `ahmad123`
-- **Santri**: `faiz` / `faiz123`
+**Use GitHub Codespaces**
 
-## 📱 Penggunaan
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-1. Buka aplikasi di browser
-2. Login dengan salah satu akun demo
-3. Explore fitur sesuai role Anda
+## What technologies are used for this project?
 
-## 🏗️ Struktur Project
+This project is built with:
 
-```
-src/
-├── app/                    # Next.js App Router
-│   ├── dashboard/         # Halaman dashboard
-│   ├── api/              # API routes
-│   └── layout.tsx        # Root layout
-├── components/           # Reusable components
-│   ├── ui/              # shadcn/ui components
-│   └── tahfidz/         # App-specific components
-├── contexts/            # React contexts
-├── hooks/               # Custom hooks
-├── lib/                 # Utilities & types
-└── services/            # Business logic services
-```
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
 
-## 🚀 Build & Deploy
+## How can I deploy this project?
 
-```bash
-# Build untuk production
-npm run build
+Simply open [Lovable](https://lovable.dev/projects/f9a3c1e9-c66e-4c83-b1ca-7951f127d340) and click on Share -> Publish.
 
-# Jalankan production server
-npm start
-```
+## Can I connect a custom domain to my Lovable project?
 
-## 📋 Requirements
+Yes, you can!
 
-- Node.js 18+
-- npm atau yarn
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
-## 🤝 Contributing
-
-1. Fork repository
-2. Buat branch fitur baru
-3. Commit perubahan
-4. Push ke branch
-5. Buat Pull Request
-
-## 📄 License
-
-MIT License - lihat file LICENSE untuk detail.
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)

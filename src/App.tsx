@@ -7,12 +7,6 @@ import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
-import Halaqoh from "./pages/Halaqoh";
-import Santri from "./pages/Santri";
-import Ustadz from "./pages/Ustadz";
-import Absensi from "./pages/Absensi";
-import Penilaian from "./pages/Penilaian";
-import Setoran from "./pages/Setoran";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,12 +22,6 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/halaqoh" element={<Halaqoh />} />
-            <Route path="/santri" element={<Santri />} />
-            <Route path="/ustadz" element={<Ustadz />} />
-            <Route path="/absensi" element={<Absensi />} />
-            <Route path="/penilaian" element={<Penilaian />} />
-            <Route path="/setoran" element={<Setoran />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

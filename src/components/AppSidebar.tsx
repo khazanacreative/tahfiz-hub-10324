@@ -1,148 +1,145 @@
-import { ReactNode } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { NavLink, useLocation } from "react-router-dom";
+import {
+  LayoutDashboard,
+  BookOpen,
+  UserCheck,
+  FileText,
+  ClipboardCheck,
+  Users,
+  BookMarked,
+  GraduationCap,
+  UserCog,
+  Megaphone,
+  Settings,
+  LogOut,
+} from "lucide-react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
-interface PageLayoutProps {
-  title: string;
-  description?: string;
-  children: ReactNode;
-  actions?: ReactNode;
-}
+const menuItems = [
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
+  { title: "Setoran Hafalan", url: "/setoran", icon: BookOpen },
+  { title: "Absensi", url: "/absensi", icon: UserCheck },
+  { title: "Laporan", url: "/laporan", icon: FileText },
+  { title: "Penilaian", url: "/penilaian", icon: ClipboardCheck },
+];
 
-export function PageLayout({ title, description, children, actions }: PageLayoutProps) {
+const masterDataItems = [
+  { title: "Data Santri", url: "/santri", icon: Users },
+  { title: "Data Halaqoh", url: "/halaqoh", icon: BookMarked },
+  { title: "Data Ustadz", url: "/ustadz", icon: GraduationCap },
+  { title: "Akun Pengguna", url: "/users", icon: UserCog },
+  { title: "Pengumuman", url: "/pengumuman", icon: Megaphone },
+];
+
+export function AppSidebar() {
+  const { open } = useSidebar();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast.error("Gagal logout");
+    } else {
+      toast.success("Berhasil logout");
+      navigate("/auth");
+    }
+  };
+
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">
-            {title}
-          </h1>
-          {description && (
-            <p className="text-muted-foreground mt-1">{description}</p>
-          )}
-        </div>
-        {actions && <div className="flex gap-2">{actions}</div>}
-      </div>
-      {children}
-    </div>
-  );
-}
-
-interface DataCardProps {
-  title: string;
-  description?: string;
-  children: ReactNode;
-  className?: string;
-}
-
-export function DataCard({ title, description, children, className }: DataCardProps) {
-  return (
-    <Card className={className}>
-      {(title || description) && (
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          {description && <CardDescription>{description}</CardDescription>}
-        </CardHeader>
-      )}
-      <CardContent>{children}</CardContent>
-    </Card>
-  );
-}
-
-interface FormLayoutProps {
-  title: string;
-  description?: string;
-  children: ReactNode;
-  onSubmit?: (e: React.FormEvent) => void;
-  isSubmitting?: boolean;
-  submitLabel?: string;
-  cancelLabel?: string;
-  onCancel?: () => void;
-}
-
-export function FormLayout({
-  title,
-  description,
-  children,
-  onSubmit,
-  isSubmitting = false,
-  submitLabel = 'Simpan',
-  cancelLabel = 'Batal',
-  onCancel,
-}: FormLayoutProps) {
-  return (
-    <Card className="max-w-4xl mx-auto">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        {description && <CardDescription>{description}</CardDescription>}
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={onSubmit} className="space-y-6">
-          {children}
-          <div className="flex justify-end gap-2 pt-4">
-            {onCancel && (
-              <button
-                type="button"
-                onClick={onCancel}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
-                disabled={isSubmitting}
-              >
-                {cancelLabel}
-              </button>
-            )}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="px-4 py-2 text-sm font-medium text-white bg-emerald-600 border border-transparent rounded-md hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSubmitting ? 'Menyimpan...' : submitLabel}
-            </button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
-  );
-}
-
-interface TableLayoutProps {
-  title: string;
-  description?: string;
-  children: ReactNode;
-  searchPlaceholder?: string;
-  searchValue?: string;
-  onSearchChange?: (value: string) => void;
-  filters?: ReactNode;
-}
-
-export function TableLayout({
-  title,
-  description,
-  children,
-  searchPlaceholder = 'Cari...',
-  searchValue,
-  onSearchChange,
-  filters,
-}: TableLayoutProps) {
-  return (
-    <DataCard title={title} description={description}>
-      <div className="space-y-4">
-        {(onSearchChange || filters) && (
-          <div className="flex flex-col sm:flex-row gap-4">
-            {onSearchChange && (
-              <div className="flex-1">
-                <input
-                  type="text"
-                  placeholder={searchPlaceholder}
-                  value={searchValue}
-                  onChange={(e) => onSearchChange(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-                />
+    <Sidebar className="border-r border-border bg-card">
+      <SidebarContent>
+        {/* Header */}
+        <div className="p-4 border-b border-border">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
+              <BookOpen className="w-6 h-6 text-primary-foreground" />
+            </div>
+            {open && (
+              <div>
+                <h2 className="font-bold text-lg text-foreground">Tahfidz App</h2>
+                <p className="text-xs text-muted-foreground">Manajemen Hafalan</p>
               </div>
             )}
-            {filters && <div className="flex gap-2">{filters}</div>}
           </div>
-        )}
-        <div className="overflow-x-auto">{children}</div>
-      </div>
-    </DataCard>
+        </div>
+
+        {/* Main Menu */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Menu Utama</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {menuItems.map((item) => (
+                <SidebarMenuItem key={item.url}>
+                  <SidebarMenuButton asChild isActive={isActive(item.url)}>
+                    <NavLink to={item.url}>
+                      <item.icon className="w-4 h-4" />
+                      <span>{item.title}</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Master Data */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Master Data</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {masterDataItems.map((item) => (
+                <SidebarMenuItem key={item.url}>
+                  <SidebarMenuButton asChild isActive={isActive(item.url)}>
+                    <NavLink to={item.url}>
+                      <item.icon className="w-4 h-4" />
+                      <span>{item.title}</span>
+                    </NavLink>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* System */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Sistem</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive("/profile")}>
+                  <NavLink to="/profile">
+                    <Settings className="w-4 h-4" />
+                    <span>Profil & Pengaturan</span>
+                  </NavLink>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton onClick={handleLogout}>
+                  <LogOut className="w-4 h-4" />
+                  <span>Keluar</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
 }

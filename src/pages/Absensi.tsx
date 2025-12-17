@@ -1,344 +1,370 @@
+import { useEffect, useState } from "react";
+import { Layout } from "@/components/Layout";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { toast } from "sonner";
+import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
-'use client';
+interface Absensi {
+  id: string;
+  id_santri: string;
+  tanggal: string;
+  status_kehadiran: string;
+  keterangan?: string;
+  santri?: { nama_santri: string; nis: string };
+}
 
-import { useState, useMemo } from 'react';
-import { useTahfidz } from '@/contexts/TahfidzContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2 } from 'lucide-react';
-import { TablePagination } from '@/components/tahfidz/TablePagination';
-import { toast } from 'sonner';
-import type { Absensi, StatusKehadiran } from '@/lib/tahfidz-types';
+interface Santri {
+  id: string;
+  nama_santri: string;
+  nis: string;
+}
 
 export default function AbsensiPage() {
-  const { data, currentUser, addAbsensi, updateAbsensi, deleteAbsensi } = useTahfidz();
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [editingAbsensi, setEditingAbsensi] = useState<Absensi | null>(null);
-  const [filterSantri, setFilterSantri] = useState<string>('all');
-  const [filterHalaqoh, setFilterHalaqoh] = useState<string>('all');
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 10;
+  // Dummy data shown before Supabase is connected or when fetch fails
+  const DUMMY_SANTRI: Santri[] = [
+    { id: "santri-1", nama_santri: "Santri A", nis: "S001" },
+    { id: "santri-2", nama_santri: "Santri B", nis: "S002" },
+    { id: "santri-3", nama_santri: "Santri C", nis: "S003" },
+  ];
 
-  const [formData, setFormData] = useState<{
-    id_santri: string;
-    tanggal: string;
-    status_kehadiran: StatusKehadiran;
-    keterangan: string;
-  }>({
-    id_santri: '',
+  const DUMMY_ABSENSI: Absensi[] = [
+    { id: "abs-1", id_santri: "santri-1", tanggal: new Date().toISOString(), status_kehadiran: "Hadir", santri: { nama_santri: "Santri A", nis: "S001" } },
+    { id: "abs-2", id_santri: "santri-2", tanggal: new Date().toISOString(), status_kehadiran: "Izin", santri: { nama_santri: "Santri B", nis: "S002" } },
+  ];
+
+  const [absensiList, setAbsensiList] = useState<Absensi[]>(DUMMY_ABSENSI);
+  const [santriList, setSantriList] = useState<Santri[]>(DUMMY_SANTRI);
+  const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [editId, setEditId] = useState<string | null>(null);
+  
+  const [formData, setFormData] = useState({
+    id_santri: "",
     tanggal: new Date().toISOString().split('T')[0],
-    status_kehadiran: 'Hadir',
-    keterangan: '',
+    status_kehadiran: "Hadir",
+    keterangan: "",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
+  useEffect(() => {
+    fetchAbsensi();
+    fetchSantri();
+  }, []);
 
-    if (!formData.id_santri) {
-      toast.error('Santri harus dipilih');
-      return;
+  const fetchAbsensi = async () => {
+    setLoading(true);
+    try {
+      const { data: absensiData, error: absensiError } = await supabase
+        .from("absensi")
+        .select("id, id_santri, tanggal, status_kehadiran, keterangan")
+        .order("tanggal", { ascending: false });
+
+      if (absensiError) throw absensiError;
+
+      const rows = absensiData || [];
+
+      // Collect santri ids referenced in absensi
+      const santriIds = Array.from(new Set(rows.map((r: any) => r.id_santri).filter(Boolean)));
+
+      let santriMap: Record<string, { nama_santri: string; nis: string }> = {};
+      if (santriIds.length > 0) {
+        const { data: santriData } = await supabase
+          .from("santri")
+          .select("id, nama_santri, nis")
+          .in("id", santriIds as any[]);
+
+        (santriData || []).forEach((s: any) => {
+          santriMap[s.id] = { nama_santri: s.nama_santri, nis: s.nis };
+        });
+      }
+
+      const mapped = rows.map((r: any) => ({
+        id: r.id,
+        id_santri: r.id_santri,
+        tanggal: r.tanggal,
+        status_kehadiran: r.status_kehadiran,
+        keterangan: r.keterangan,
+        santri: r.id_santri ? santriMap[r.id_santri] || null : null,
+      } as Absensi));
+
+      setAbsensiList(mapped);
+    } catch (err) {
+      console.error(err);
+      toast.error("Gagal memuat data absensi");
+    } finally {
+      setLoading(false);
     }
-
-    if (editingAbsensi) {
-      updateAbsensi(editingAbsensi.id, formData);
-      toast.success('Absensi berhasil diupdate');
-    } else {
-      addAbsensi(formData);
-      toast.success('Absensi berhasil ditambahkan');
-    }
-
-    setIsDialogOpen(false);
-    resetForm();
   };
 
-  const handleEdit = (absensi: Absensi): void => {
-    setEditingAbsensi(absensi);
+  const fetchSantri = async () => {
+    const { data, error } = await supabase
+      .from("santri")
+      .select("id, nama_santri, nis")
+      .eq("status", "Aktif")
+      .order("nama_santri");
+
+    if (error) {
+      toast.error("Gagal memuat data santri");
+    } else {
+      setSantriList(data || []);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // Basic validation
+      if (!formData.id_santri) {
+        toast.error("Pilih santri terlebih dahulu");
+        setLoading(false);
+        return;
+      }
+
+      // Ensure tanggal is a string (YYYY-MM-DD)
+      const payload = {
+        id_santri: formData.id_santri,
+        tanggal: formData.tanggal,
+        status_kehadiran: formData.status_kehadiran,
+        keterangan: formData.keterangan || null,
+      } as any;
+
+      if (editId) {
+        const { data, error } = await supabase
+          .from("absensi")
+          .update(payload)
+          .eq("id", editId)
+          .select()
+          .single();
+
+        if (error) throw error;
+        toast.success("Absensi berhasil diupdate");
+      } else {
+        const { data, error } = await supabase
+          .from("absensi")
+          .insert([payload])
+          .select()
+          .single();
+
+        if (error) throw error;
+        toast.success("Absensi berhasil ditambahkan");
+      }
+
+      setIsOpen(false);
+      resetForm();
+      fetchAbsensi();
+    } catch (error) {
+      toast.error("Gagal menyimpan absensi");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleEdit = (absensi: Absensi) => {
+    setEditId(absensi.id);
     setFormData({
       id_santri: absensi.id_santri,
       tanggal: absensi.tanggal,
       status_kehadiran: absensi.status_kehadiran,
-      keterangan: absensi.keterangan,
+      keterangan: absensi.keterangan || "",
     });
-    setIsDialogOpen(true);
+    setIsOpen(true);
   };
 
-  const handleDelete = (id: string): void => {
-    if (confirm('Yakin ingin menghapus absensi ini?')) {
-      deleteAbsensi(id);
-      toast.success('Absensi berhasil dihapus');
+  const handleDelete = async (id: string) => {
+    if (!confirm("Yakin ingin menghapus absensi ini?")) return;
+
+    const { error } = await supabase
+      .from("absensi")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      toast.error("Gagal menghapus absensi");
+    } else {
+      toast.success("Absensi berhasil dihapus");
+      fetchAbsensi();
     }
   };
 
-  const resetForm = (): void => {
+  const resetForm = () => {
+    setEditId(null);
     setFormData({
-      id_santri: '',
+      id_santri: "",
       tanggal: new Date().toISOString().split('T')[0],
-      status_kehadiran: 'Hadir',
-      keterangan: '',
+      status_kehadiran: "Hadir",
+      keterangan: "",
     });
-    setEditingAbsensi(null);
   };
 
-  const filteredAbsensi = useMemo(() => {
-    let filtered = [...data.absensi].sort(
-      (a, b) => new Date(b.tanggal).getTime() - new Date(a.tanggal).getTime()
-    );
-    
-    // Filter for Asatidz role - only show absensi from their halaqoh santri
-    if (currentUser && currentUser.role === 'Asatidz') {
-      const ustadzHalaqoh = data.halaqoh.filter((h) => h.id_asatidz === currentUser.id);
-      const halaqohIds = ustadzHalaqoh.map((h) => h.id);
-      const santriIds = data.santri
-        .filter((s) => halaqohIds.includes(s.id_halaqoh))
-        .map((s) => s.id);
-      filtered = filtered.filter((a) => santriIds.includes(a.id_santri));
-    }
-    
-    if (filterSantri !== 'all') {
-      filtered = filtered.filter((a) => a.id_santri === filterSantri);
-    }
-    
-    if (filterHalaqoh !== 'all') {
-      filtered = filtered.filter((a) => {
-        const santri = data.santri.find((s) => s.id === a.id_santri);
-        return santri?.id_halaqoh === filterHalaqoh;
-      });
-    }
-    
-    return filtered;
-  }, [data.absensi, data.santri, data.halaqoh, currentUser, filterSantri, filterHalaqoh]);
-
-  const totalPages = Math.ceil(filteredAbsensi.length / itemsPerPage);
-  const paginatedAbsensi = filteredAbsensi.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const getStatusColor = (status: StatusKehadiran): string => {
-    const colors: Record<StatusKehadiran, string> = {
-      'Hadir': 'default',
-      'Izin': 'secondary',
-      'Sakit': 'secondary',
-      'Alfa': 'destructive',
+  const getStatusBadge = (status: string) => {
+    const variants: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
+      "Hadir": "default",
+      "Izin": "secondary",
+      "Sakit": "outline",
+      "Alfa": "destructive",
     };
-    return colors[status] || 'default';
+    return <Badge variant={variants[status] || "default"}>{status}</Badge>;
+  };
+
+  const safeFormatDate = (d: any) => {
+    try {
+      if (!d) return "-";
+      const date = new Date(d);
+      if (isNaN(date.getTime())) return String(d);
+      return date.toLocaleDateString("id-ID");
+    } catch (e) {
+      return String(d || "-");
+    }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h1 className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">Absensi Setoran</h1>
-        <Dialog open={isDialogOpen} onOpenChange={(open) => {
-          setIsDialogOpen(open);
-          if (!open) resetForm();
-        }}>
-          <DialogTrigger asChild>
-            <Button className="bg-gradient-to-r from-emerald-600 to-lime-600 hover:from-emerald-700 hover:to-lime-700">
-              <Plus className="h-4 w-4 mr-2" />
-              Tambah Absensi
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-md">
-            <DialogHeader>
-              <DialogTitle>{editingAbsensi ? 'Edit' : 'Tambah'} Absensi</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="id_santri">Santri</Label>
-                <Select
-                  value={formData.id_santri}
-                  onValueChange={(value) => setFormData({ ...formData, id_santri: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih santri" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {data.santri.filter((s) => s.status === 'Aktif').map((s) => (
-                      <SelectItem key={s.id} value={s.id}>
-                        {s.nama_santri}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="tanggal">Tanggal</Label>
-                <Input
-                  id="tanggal"
-                  type="date"
-                  value={formData.tanggal}
-                  onChange={(e) => setFormData({ ...formData, tanggal: e.target.value })}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="status_kehadiran">Status Kehadiran</Label>
-                <Select
-                  value={formData.status_kehadiran}
-                  onValueChange={(value) => setFormData({ ...formData, status_kehadiran: value as StatusKehadiran })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Hadir">Hadir</SelectItem>
-                    <SelectItem value="Izin">Izin</SelectItem>
-                    <SelectItem value="Sakit">Sakit</SelectItem>
-                    <SelectItem value="Alfa">Alfa</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="keterangan">Keterangan</Label>
-                <Textarea
-                  id="keterangan"
-                  value={formData.keterangan}
-                  onChange={(e) => setFormData({ ...formData, keterangan: e.target.value })}
-                  placeholder="Keterangan (opsional)"
-                />
-              </div>
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Batal
-                </Button>
-                <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700">
-                  Simpan
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      <Card>
-        <CardHeader>
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <div className="w-full sm:w-64">
-              <Select
-                value={filterSantri}
-                onValueChange={(value) => {
-                  setFilterSantri(value);
-                  setCurrentPage(1);
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Filter Santri" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Semua Santri</SelectItem>
-                  {(() => {
-                    let santriList = data.santri.filter((s) => s.status === 'Aktif');
-                    if (currentUser && currentUser.role === 'Asatidz') {
-                      const ustadzHalaqoh = data.halaqoh.filter((h) => h.id_asatidz === currentUser.id);
-                      const halaqohIds = ustadzHalaqoh.map((h) => h.id);
-                      santriList = santriList.filter((s) => halaqohIds.includes(s.id_halaqoh));
-                    }
-                    return santriList.map((s) => (
-                      <SelectItem key={s.id} value={s.id}>
-                        {s.nama_santri}
-                      </SelectItem>
-                    ));
-                  })()}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="w-full sm:w-64">
-              <Select
-                value={filterHalaqoh}
-                onValueChange={(value) => {
-                  setFilterHalaqoh(value);
-                  setCurrentPage(1);
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Filter Halaqoh" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Semua Halaqoh</SelectItem>
-                  {(() => {
-                    let halaqohList = data.halaqoh;
-                    if (currentUser && currentUser.role === 'Asatidz') {
-                      halaqohList = data.halaqoh.filter((h) => h.id_asatidz === currentUser.id);
-                    }
-                    return halaqohList.map((h) => (
-                      <SelectItem key={h.id} value={h.id}>
-                        {h.nama_halaqoh}
-                      </SelectItem>
-                    ));
-                  })()}
-                </SelectContent>
-              </Select>
-            </div>
+    <Layout>
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground">Absensi Setoran</h1>
+            <p className="text-muted-foreground">Kelola kehadiran santri</p>
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={resetForm}>
+                <Plus className="w-4 h-4 mr-2" />
+                Tambah Absensi
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{editId ? "Edit Absensi" : "Tambah Absensi"}</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Santri</Label>
+                  <Select 
+                    value={formData.id_santri} 
+                    onValueChange={(value) => setFormData({ ...formData, id_santri: value })}
+                    required
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih Santri" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {santriList.map((santri) => (
+                        <SelectItem key={santri.id} value={santri.id}>
+                          {santri.nama_santri} - {santri.nis}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Tanggal</Label>
+                  <Input
+                    type="date"
+                    value={formData.tanggal}
+                    onChange={(e) => setFormData({ ...formData, tanggal: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Status Kehadiran</Label>
+                  <Select 
+                    value={formData.status_kehadiran} 
+                    onValueChange={(value) => setFormData({ ...formData, status_kehadiran: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Hadir">Hadir</SelectItem>
+                      <SelectItem value="Izin">Izin</SelectItem>
+                      <SelectItem value="Sakit">Sakit</SelectItem>
+                      <SelectItem value="Alfa">Alfa</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Keterangan</Label>
+                  <Input
+                    value={formData.keterangan}
+                    onChange={(e) => setFormData({ ...formData, keterangan: e.target.value })}
+                    placeholder="Keterangan (opsional)"
+                  />
+                </div>
+
+                <div className="flex justify-end gap-2">
+                  <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
+                    Batal
+                  </Button>
+                  <Button type="submit" disabled={loading}>
+                    {loading ? "Menyimpan..." : "Simpan"}
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Daftar Absensi</CardTitle>
+          </CardHeader>
+          <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Tanggal</TableHead>
-                  <TableHead>Santri</TableHead>
+                  <TableHead>NIS</TableHead>
+                  <TableHead>Nama Santri</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Keterangan</TableHead>
-                  <TableHead>Aksi</TableHead>
+                  <TableHead className="text-right">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {paginatedAbsensi.map((absensi) => {
-                  const santri = data.santri.find((s) => s.id === absensi.id_santri);
-                  return (
-                    <TableRow key={absensi.id}>
-                      <TableCell>{new Date(absensi.tanggal).toLocaleDateString('id-ID')}</TableCell>
-                      <TableCell>{santri?.nama_santri || '-'}</TableCell>
-                      <TableCell>
-                        <Badge variant={getStatusColor(absensi.status_kehadiran) as 'default' | 'secondary' | 'destructive'}>
-                          {absensi.status_kehadiran}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="max-w-xs truncate">{absensi.keterangan || '-'}</TableCell>
-                      <TableCell>
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="outline" onClick={() => handleEdit(absensi)}>
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="text-red-600"
-                            onClick={() => handleDelete(absensi.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-                {paginatedAbsensi.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center text-gray-500 py-8">
-                      Tidak ada data absensi
+                {absensiList.map((absensi) => (
+                  <TableRow key={absensi.id}>
+                    <TableCell>{safeFormatDate(absensi.tanggal)}</TableCell>
+                    <TableCell>{absensi.santri?.nis || "-"}</TableCell>
+                    <TableCell className="font-medium">{absensi.santri?.nama_santri || "-"}</TableCell>
+                    <TableCell>{getStatusBadge(absensi.status_kehadiran)}</TableCell>
+                    <TableCell>{absensi.keterangan || "-"}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={() => handleEdit(absensi)}
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={() => handleDelete(absensi.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </TableCell>
                   </TableRow>
-                )}
+                ))}
               </TableBody>
             </Table>
-          </div>
-          <TablePagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            totalItems={filteredAbsensi.length}
-            itemsPerPage={itemsPerPage}
-          />
-        </CardContent>
-      </Card>
-    </div>
+          </CardContent>
+        </Card>
+      </div>
+    </Layout>
   );
 }
