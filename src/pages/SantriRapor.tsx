@@ -1,12 +1,11 @@
-'use client';
-
+import Layout from '@/components/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileText, Download } from 'lucide-react';
 
 export default function RaporSayaPage() {
   return (
-    <div className="p-6 space-y-6">
+    <Layout>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">
@@ -100,6 +99,6 @@ export default function RaporSayaPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </Layout>
   );
 }

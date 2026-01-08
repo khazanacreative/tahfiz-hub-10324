@@ -1,6 +1,5 @@
-'use client';
-
 import React, { useMemo } from 'react';
+import Layout from '@/components/Layout';
 import { useTahfidz } from '@/contexts/TahfidzContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -85,7 +84,7 @@ export default function AbsensiSantriPage(): React.JSX.Element {
   }
 
   return (
-    <div className="space-y-6">
+    <Layout>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-green-900">Absensi Tahfidz</h1>
@@ -254,6 +253,6 @@ export default function AbsensiSantriPage(): React.JSX.Element {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </Layout>
   );
 }

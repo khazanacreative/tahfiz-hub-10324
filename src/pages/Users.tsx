@@ -1,6 +1,5 @@
-﻿'use client';
-
 import { useState, useMemo } from 'react';
+import Layout from '@/components/Layout';
 import { useTahfidz } from '@/contexts/TahfidzContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -124,7 +123,8 @@ export default function UsersPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <Layout>
+      <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h1 className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">Akun Pengguna</h1>
         <Dialog open={isDialogOpen} onOpenChange={(open) => {
@@ -319,6 +319,7 @@ export default function UsersPage() {
           />
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </Layout>
   );
 }
