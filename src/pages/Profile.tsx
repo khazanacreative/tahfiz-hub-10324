@@ -1,6 +1,5 @@
-'use client';
-
 import { useState } from 'react';
+import Layout from '@/components/Layout';
 import { useTahfidz } from '@/contexts/TahfidzContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -81,7 +80,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <Layout>
+      <div className="space-y-6 max-w-4xl">
       <div>
         <h1 className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">Profil Saya</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-1">Kelola profil dan keamanan akun</p>
@@ -260,6 +260,7 @@ export default function ProfilePage() {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+      </div>
+    </Layout>
   );
 }

@@ -1,5 +1,4 @@
-'use client';
-
+import Layout from '@/components/Layout';
 import { useTahfidz } from '@/contexts/TahfidzContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -26,7 +25,7 @@ export default function PengumumanSantriPage() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <Layout>
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-emerald-800 dark:text-emerald-400">
@@ -122,6 +121,6 @@ export default function PengumumanSantriPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </Layout>
   );
 }

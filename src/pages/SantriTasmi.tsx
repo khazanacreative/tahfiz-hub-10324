@@ -1,6 +1,5 @@
-'use client';
-
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import Layout from '@/components/Layout';
 import { useTahfidz } from '@/contexts/TahfidzContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,7 +8,6 @@ import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Calendar, User, CheckCircle, XCircle, AlertCircle, Award, BookOpen } from 'lucide-react';
 import { formatManzilShort } from '@/lib/ujian-helper';
-import { useState } from 'react';
 import type { TasmiMarhalah } from '@/lib/tahfidz-types';
 
 export default function TasmiSayaPage() {
@@ -63,7 +61,7 @@ export default function TasmiSayaPage() {
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <Layout>
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">
@@ -457,6 +455,6 @@ export default function TasmiSayaPage() {
           })()}
         </DialogContent>
       </Dialog>
-    </div>
+    </Layout>
   );
 }

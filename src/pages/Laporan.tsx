@@ -1,6 +1,5 @@
-'use client';
-
 import { useState, useMemo } from 'react';
+import Layout from '@/components/Layout';
 import { useTahfidz } from '@/contexts/TahfidzContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -95,7 +94,8 @@ export default function LaporanPage() {
   );
 
   return (
-    <div className="space-y-6">
+    <Layout>
+      <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-emerald-900 dark:text-emerald-100">Laporan Hafalan</h1>
         <p className="text-gray-600 dark:text-gray-400 mt-1">Laporan dan statistik hafalan santri</p>
@@ -265,6 +265,7 @@ export default function LaporanPage() {
           </div>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </Layout>
   );
 }
