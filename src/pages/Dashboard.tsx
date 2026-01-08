@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, BookMarked, BookOpen, TrendingUp } from "lucide-react";
-import Layout from "@/components/Layout";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { Layout } from "@/components/Layout";
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -12,8 +11,6 @@ export default function Dashboard() {
     totalSetoran: 0,
     avgKelancaran: 0,
   });
-  
-  const [chartData, setChartData] = useState<Array<{ juz: string; total: number }>>([]);
 
   useEffect(() => {
     fetchStats();
@@ -23,7 +20,7 @@ export default function Dashboard() {
     const [santriRes, halaqohRes, setoranRes] = await Promise.all([
       supabase.from("santri").select("*", { count: "exact" }),
       supabase.from("halaqoh").select("*", { count: "exact" }),
-      supabase.from("setoran").select("nilai_kelancaran, juz"),
+      supabase.from("setoran").select("nilai_kelancaran"),
     ]);
 
     const avgKelancaran = setoranRes.data?.length
@@ -36,18 +33,6 @@ export default function Dashboard() {
       totalSetoran: setoranRes.data?.length || 0,
       avgKelancaran: Math.round(avgKelancaran),
     });
-
-    // Process chart data - group by juz
-    const juzData: Record<number, number> = {};
-    setoranRes.data?.forEach((item) => {
-      juzData[item.juz] = (juzData[item.juz] || 0) + 1;
-    });
-
-    const chartArray = Object.entries(juzData)
-      .map(([juz, total]) => ({ juz: `Juz ${juz}`, total }))
-      .slice(0, 10);
-    
-    setChartData(chartArray);
   };
 
   const statCards = [
@@ -55,25 +40,25 @@ export default function Dashboard() {
       title: "Total Santri",
       value: stats.totalSantri,
       icon: Users,
-      gradient: "from-primary to-primary-glow",
+      gradient: "from-green-500 to-lime-500",
     },
     {
       title: "Total Halaqoh",
       value: stats.totalHalaqoh,
       icon: BookMarked,
-      gradient: "from-secondary to-secondary/80",
+      gradient: "from-green-500 to-lime-500",
     },
     {
       title: "Total Setoran",
       value: stats.totalSetoran,
       icon: BookOpen,
-      gradient: "from-chart-3 to-chart-3/80",
+      gradient: "from-green-500 to-lime-500",
     },
     {
       title: "Rata-rata Kelancaran",
       value: `${stats.avgKelancaran}%`,
       icon: TrendingUp,
-      gradient: "from-chart-4 to-chart-4/80",
+      gradient: "from-green-500 to-lime-500",
     },
   ];
 
@@ -95,7 +80,7 @@ export default function Dashboard() {
                   {card.title}
                 </CardTitle>
                 <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${card.gradient} flex items-center justify-center`}>
-                  <card.icon className={`w-5 h-5 ${card.gradient.includes('primary') ? 'text-primary-glow' : 'text-white'}`} />
+                  <card.icon className="w-5 h-5 text-white" />
                 </div>
               </CardHeader>
               <CardContent>
@@ -105,52 +90,33 @@ export default function Dashboard() {
           ))}
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Grafik Setoran per Juz</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="juz" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="total" fill="hsl(var(--primary))" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Informasi Sistem</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-sm">
-                  <div className="w-2 h-2 rounded-full bg-primary"></div>
-                  <span className="text-muted-foreground">
-                    Sistem manajemen tahfidz dengan fitur lengkap untuk pengelolaan hafalan santri
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <div className="w-2 h-2 rounded-full bg-secondary"></div>
-                  <span className="text-muted-foreground">
-                    Dilengkapi dengan fitur setoran, absensi, penilaian, dan laporan
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <div className="w-2 h-2 rounded-full bg-chart-3"></div>
-                  <span className="text-muted-foreground">
-                    Akses berbasis role untuk Admin, Koordinator, Asatidz, Wali Santri, dan Yayasan
-                  </span>
-                </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Informasi Sistem</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-sm">
+                <div className="w-2 h-2 rounded-full bg-primary"></div>
+                <span className="text-muted-foreground">
+                  Sistem manajemen tahfidz dengan fitur lengkap untuk pengelolaan hafalan santri
+                </span>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+              <div className="flex items-center gap-2 text-sm">
+                <div className="w-2 h-2 rounded-full bg-secondary"></div>
+                <span className="text-muted-foreground">
+                  Dilengkapi dengan fitur setoran, absensi, penilaian, dan laporan
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <div className="w-2 h-2 rounded-full bg-chart-3"></div>
+                <span className="text-muted-foreground">
+                  Akses berbasis role untuk Admin, Koordinator, Asatidz, Wali Santri, dan Yayasan
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </Layout>
   );

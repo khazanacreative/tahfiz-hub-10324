@@ -4,67 +4,81 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
-import { TahfidzProvider } from "@/contexts/TahfidzContext";
-import { SidebarProvider } from "@/contexts/SidebarContext";
-
-// Pages
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
-import Santri from "./pages/Santri";
-import Absensi from "./pages/Absensi";
-import Laporan from "./pages/Laporan";
-import Users from "./pages/Users";
-import UjianTahapan from "./pages/UjianTahapan";
-import Logs from "./pages/Logs";
-import Profile from "./pages/Profile";
-import SantriProgress from "./pages/SantriProgress";
-import SantriAbsensi from "./pages/SantriAbsensi";
-import SantriTasmi from "./pages/SantriTasmi";
-import SantriRapor from "./pages/SantriRapor";
-import SantriPengumuman from "./pages/SantriPengumuman";
+import SetoranHafalan from "./pages/SetoranHafalan";
+import AbsensiSetoran from "./pages/AbsensiSetoran";
+import LaporanHafalan from "./pages/LaporanHafalan";
+import DrillHafalan from "./pages/DrillHafalan";
+import UjianTasmi from "./pages/UjianTasmi";
+import UjianTahfidz from "./pages/UjianTahfidz";
+import RaporSemester from "./pages/RaporSemester";
+import DataSantri from "./pages/DataSantri";
+import DataHalaqoh from "./pages/DataHalaqoh";
+import DataKelas from "./pages/DataKelas";
+import DataUstadz from "./pages/DataUstadz";
+import DataUsers from "./pages/DataUsers";
+import PengumumanPage from "./pages/Pengumuman";
 import NotFound from "./pages/NotFound";
+// Tilawah pages
+import TilawahDashboard from "./pages/TilawahDashboard";
+import TilawahAbsensi from "./pages/TilawahAbsensi";
+import TilawahLaporan from "./pages/TilawahLaporan";
+import TilawahUjian from "./pages/TilawahUjian";
+import TilawahRapor from "./pages/TilawahRapor";
+// Akademik pages
+import AkademikDashboard from "./pages/AkademikDashboard";
+import AkademikImpor from "./pages/AkademikImpor";
+import AkademikRapor from "./pages/AkademikRapor";
+// Profil & Pengaturan
+import Profil from "./pages/Profil";
+import Pengaturan from "./pages/Pengaturan";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-      <TahfidzProvider>
-        <SidebarProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<Index />} />
-                <Route path="/auth" element={<Auth />} />
-                
-                {/* Admin/Asatidz Routes */}
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/santri" element={<Santri />} />
-                <Route path="/absensi" element={<Absensi />} />
-                <Route path="/ujian" element={<UjianTahapan />} />
-                <Route path="/laporan" element={<Laporan />} />
-                <Route path="/users" element={<Users />} />
-                <Route path="/logs" element={<Logs />} />
-                <Route path="/profile" element={<Profile />} />
-                
-                {/* Santri/Wali Routes */}
-                <Route path="/santri-progress" element={<SantriProgress />} />
-                <Route path="/santri-absensi" element={<SantriAbsensi />} />
-                <Route path="/santri-tasmi" element={<SantriTasmi />} />
-                <Route path="/santri-rapor" element={<SantriRapor />} />
-                <Route path="/santri-pengumuman" element={<SantriPengumuman />} />
-                
-                {/* 404 */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </SidebarProvider>
-      </TahfidzProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/absensi" element={<AbsensiSetoran />} />
+            <Route path="/setoran" element={<SetoranHafalan />} />
+            <Route path="/laporan" element={<LaporanHafalan />} />
+            <Route path="/drill" element={<DrillHafalan />} />
+            <Route path="/ujian-tasmi" element={<UjianTasmi />} />
+            <Route path="/ujian-tahfidz" element={<UjianTahfidz />} />
+            <Route path="/rapor" element={<RaporSemester />} />
+            <Route path="/santri" element={<DataSantri />} />
+            <Route path="/halaqoh" element={<DataHalaqoh />} />
+            <Route path="/kelas" element={<DataKelas />} />
+            <Route path="/ustadz" element={<DataUstadz />} />
+            <Route path="/users" element={<DataUsers />} />
+            <Route path="/pengumuman" element={<PengumumanPage />} />
+            {/* Tilawah Routes */}
+            <Route path="/tilawah/dashboard" element={<TilawahDashboard />} />
+            <Route path="/tilawah/absensi" element={<TilawahAbsensi />} />
+            <Route path="/tilawah/laporan" element={<TilawahLaporan />} />
+            <Route path="/tilawah/ujian" element={<TilawahUjian />} />
+            <Route path="/tilawah/rapor" element={<TilawahRapor />} />
+            {/* Akademik Routes */}
+            <Route path="/akademik/dashboard" element={<AkademikDashboard />} />
+            <Route path="/akademik/impor" element={<AkademikImpor />} />
+            <Route path="/akademik/rapor" element={<AkademikRapor />} />
+            {/* Profil & Pengaturan */}
+            <Route path="/profil" element={<Profil />} />
+            <Route path="/pengaturan" element={<Pengaturan />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );

@@ -12,33 +12,33 @@ export interface Surah {
 export const surahList: Surah[] = [
   { number: 1, name: 'Al-Fatihah', arabicName: 'الفاتحة', numberOfAyahs: 7, juzStart: 1, juzEnd: 1 },
   { number: 2, name: 'Al-Baqarah', arabicName: 'البقرة', numberOfAyahs: 286, juzStart: 1, juzEnd: 3 },
-  { number: 3, name: 'Ali \'Imran', arabicName: 'آل عمران', numberOfAyahs: 200, juzStart: 3, juzEnd: 4 },
+  { number: 3, name: "Ali 'Imran", arabicName: 'آل عمران', numberOfAyahs: 200, juzStart: 3, juzEnd: 4 },
   { number: 4, name: 'An-Nisa', arabicName: 'النساء', numberOfAyahs: 176, juzStart: 4, juzEnd: 6 },
-  { number: 5, name: 'Al-Ma\'idah', arabicName: 'المائدة', numberOfAyahs: 120, juzStart: 6, juzEnd: 7 },
-  { number: 6, name: 'Al-An\'am', arabicName: 'الأنعام', numberOfAyahs: 165, juzStart: 7, juzEnd: 8 },
-  { number: 7, name: 'Al-A\'raf', arabicName: 'الأعراف', numberOfAyahs: 206, juzStart: 8, juzEnd: 9 },
+  { number: 5, name: "Al-Ma'idah", arabicName: 'المائدة', numberOfAyahs: 120, juzStart: 6, juzEnd: 7 },
+  { number: 6, name: "Al-An'am", arabicName: 'الأنعام', numberOfAyahs: 165, juzStart: 7, juzEnd: 8 },
+  { number: 7, name: "Al-A'raf", arabicName: 'الأعراف', numberOfAyahs: 206, juzStart: 8, juzEnd: 9 },
   { number: 8, name: 'Al-Anfal', arabicName: 'الأنفال', numberOfAyahs: 75, juzStart: 9, juzEnd: 10 },
   { number: 9, name: 'At-Taubah', arabicName: 'التوبة', numberOfAyahs: 129, juzStart: 10, juzEnd: 11 },
   { number: 10, name: 'Yunus', arabicName: 'يونس', numberOfAyahs: 109, juzStart: 11, juzEnd: 11 },
   { number: 11, name: 'Hud', arabicName: 'هود', numberOfAyahs: 123, juzStart: 11, juzEnd: 12 },
   { number: 12, name: 'Yusuf', arabicName: 'يوسف', numberOfAyahs: 111, juzStart: 12, juzEnd: 13 },
-  { number: 13, name: 'Ar-Ra\'d', arabicName: 'الرعد', numberOfAyahs: 43, juzStart: 13, juzEnd: 13 },
-  { number: 14, name: 'Ibrahim', arabicName: 'ابراهيم', numberOfAyahs: 52, juzStart: 13, juzEnd: 13 },
+  { number: 13, name: "Ar-Ra'd", arabicName: 'الرعد', numberOfAyahs: 43, juzStart: 13, juzEnd: 13 },
+  { number: 14, name: 'Ibrahim', arabicName: 'إبراهيم', numberOfAyahs: 52, juzStart: 13, juzEnd: 13 },
   { number: 15, name: 'Al-Hijr', arabicName: 'الحجر', numberOfAyahs: 99, juzStart: 14, juzEnd: 14 },
   { number: 16, name: 'An-Nahl', arabicName: 'النحل', numberOfAyahs: 128, juzStart: 14, juzEnd: 14 },
   { number: 17, name: 'Al-Isra', arabicName: 'الإسراء', numberOfAyahs: 111, juzStart: 15, juzEnd: 15 },
   { number: 18, name: 'Al-Kahf', arabicName: 'الكهف', numberOfAyahs: 110, juzStart: 15, juzEnd: 16 },
   { number: 19, name: 'Maryam', arabicName: 'مريم', numberOfAyahs: 98, juzStart: 16, juzEnd: 16 },
-  { number: 20, name: 'Taha', arabicName: 'طه', numberOfAyahs: 135, juzStart: 16, juzEnd: 16 },
+  { number: 20, name: 'Ta-Ha', arabicName: 'طه', numberOfAyahs: 135, juzStart: 16, juzEnd: 16 },
   { number: 21, name: 'Al-Anbiya', arabicName: 'الأنبياء', numberOfAyahs: 112, juzStart: 17, juzEnd: 17 },
-  { number: 22, name: 'Al-Hajj', arabicName: 'الحج', numberOfAyahs: 78, juzStart: 17, juzEnd: 17 },
-  { number: 23, name: 'Al-Mu\'minun', arabicName: 'المؤمنون', numberOfAyahs: 118, juzStart: 18, juzEnd: 18 },
+  { number: 22, name: 'Al-Hajj', arabicName: 'الحج', numberOfAyahs: 78, juzStart: 17, juzEnd: 18 },
+  { number: 23, name: "Al-Mu'minun", arabicName: 'المؤمنون', numberOfAyahs: 118, juzStart: 18, juzEnd: 18 },
   { number: 24, name: 'An-Nur', arabicName: 'النور', numberOfAyahs: 64, juzStart: 18, juzEnd: 18 },
   { number: 25, name: 'Al-Furqan', arabicName: 'الفرقان', numberOfAyahs: 77, juzStart: 18, juzEnd: 19 },
-  { number: 26, name: 'Ash-Shu\'ara', arabicName: 'الشعراء', numberOfAyahs: 227, juzStart: 19, juzEnd: 19 },
+  { number: 26, name: "Ash-Shu'ara", arabicName: 'الشعراء', numberOfAyahs: 227, juzStart: 19, juzEnd: 19 },
   { number: 27, name: 'An-Naml', arabicName: 'النمل', numberOfAyahs: 93, juzStart: 19, juzEnd: 20 },
   { number: 28, name: 'Al-Qasas', arabicName: 'القصص', numberOfAyahs: 88, juzStart: 20, juzEnd: 20 },
-  { number: 29, name: 'Al-\'Ankabut', arabicName: 'العنكبوت', numberOfAyahs: 69, juzStart: 20, juzEnd: 21 },
+  { number: 29, name: 'Al-Ankabut', arabicName: 'العنكبوت', numberOfAyahs: 69, juzStart: 20, juzEnd: 21 },
   { number: 30, name: 'Ar-Rum', arabicName: 'الروم', numberOfAyahs: 60, juzStart: 21, juzEnd: 21 },
   { number: 31, name: 'Luqman', arabicName: 'لقمان', numberOfAyahs: 34, juzStart: 21, juzEnd: 21 },
   { number: 32, name: 'As-Sajdah', arabicName: 'السجدة', numberOfAyahs: 30, juzStart: 21, juzEnd: 21 },
@@ -50,7 +50,7 @@ export const surahList: Surah[] = [
   { number: 38, name: 'Sad', arabicName: 'ص', numberOfAyahs: 88, juzStart: 23, juzEnd: 23 },
   { number: 39, name: 'Az-Zumar', arabicName: 'الزمر', numberOfAyahs: 75, juzStart: 23, juzEnd: 24 },
   { number: 40, name: 'Ghafir', arabicName: 'غافر', numberOfAyahs: 85, juzStart: 24, juzEnd: 24 },
-  { number: 41, name: 'Fussilat', arabicName: 'فصلت', numberOfAyahs: 54, juzStart: 24, juzEnd: 25 },
+  { number: 41, name: 'Fussilat', arabicName: 'فصلت', numberOfAyahs: 54, juzStart: 24, juzEnd: 24 },
   { number: 42, name: 'Ash-Shura', arabicName: 'الشورى', numberOfAyahs: 53, juzStart: 25, juzEnd: 25 },
   { number: 43, name: 'Az-Zukhruf', arabicName: 'الزخرف', numberOfAyahs: 89, juzStart: 25, juzEnd: 25 },
   { number: 44, name: 'Ad-Dukhan', arabicName: 'الدخان', numberOfAyahs: 59, juzStart: 25, juzEnd: 25 },
@@ -65,13 +65,13 @@ export const surahList: Surah[] = [
   { number: 53, name: 'An-Najm', arabicName: 'النجم', numberOfAyahs: 62, juzStart: 27, juzEnd: 27 },
   { number: 54, name: 'Al-Qamar', arabicName: 'القمر', numberOfAyahs: 55, juzStart: 27, juzEnd: 27 },
   { number: 55, name: 'Ar-Rahman', arabicName: 'الرحمن', numberOfAyahs: 78, juzStart: 27, juzEnd: 27 },
-  { number: 56, name: 'Al-Waqi\'ah', arabicName: 'الواقعة', numberOfAyahs: 96, juzStart: 27, juzEnd: 27 },
+  { number: 56, name: "Al-Waqi'ah", arabicName: 'الواقعة', numberOfAyahs: 96, juzStart: 27, juzEnd: 27 },
   { number: 57, name: 'Al-Hadid', arabicName: 'الحديد', numberOfAyahs: 29, juzStart: 27, juzEnd: 27 },
-  { number: 58, name: 'Al-Mujadila', arabicName: 'المجادلة', numberOfAyahs: 22, juzStart: 28, juzEnd: 28 },
+  { number: 58, name: 'Al-Mujadilah', arabicName: 'المجادلة', numberOfAyahs: 22, juzStart: 28, juzEnd: 28 },
   { number: 59, name: 'Al-Hashr', arabicName: 'الحشر', numberOfAyahs: 24, juzStart: 28, juzEnd: 28 },
   { number: 60, name: 'Al-Mumtahanah', arabicName: 'الممتحنة', numberOfAyahs: 13, juzStart: 28, juzEnd: 28 },
-  { number: 61, name: 'As-Saf', arabicName: 'الصف', numberOfAyahs: 14, juzStart: 28, juzEnd: 28 },
-  { number: 62, name: 'Al-Jumu\'ah', arabicName: 'الجمعة', numberOfAyahs: 11, juzStart: 28, juzEnd: 28 },
+  { number: 61, name: 'As-Saff', arabicName: 'الصف', numberOfAyahs: 14, juzStart: 28, juzEnd: 28 },
+  { number: 62, name: 'Al-Jumuah', arabicName: 'الجمعة', numberOfAyahs: 11, juzStart: 28, juzEnd: 28 },
   { number: 63, name: 'Al-Munafiqun', arabicName: 'المنافقون', numberOfAyahs: 11, juzStart: 28, juzEnd: 28 },
   { number: 64, name: 'At-Taghabun', arabicName: 'التغابن', numberOfAyahs: 18, juzStart: 28, juzEnd: 28 },
   { number: 65, name: 'At-Talaq', arabicName: 'الطلاق', numberOfAyahs: 12, juzStart: 28, juzEnd: 28 },
@@ -79,16 +79,16 @@ export const surahList: Surah[] = [
   { number: 67, name: 'Al-Mulk', arabicName: 'الملك', numberOfAyahs: 30, juzStart: 29, juzEnd: 29 },
   { number: 68, name: 'Al-Qalam', arabicName: 'القلم', numberOfAyahs: 52, juzStart: 29, juzEnd: 29 },
   { number: 69, name: 'Al-Haqqah', arabicName: 'الحاقة', numberOfAyahs: 52, juzStart: 29, juzEnd: 29 },
-  { number: 70, name: 'Al-Ma\'arij', arabicName: 'المعارج', numberOfAyahs: 44, juzStart: 29, juzEnd: 29 },
+  { number: 70, name: "Al-Ma'arij", arabicName: 'المعارج', numberOfAyahs: 44, juzStart: 29, juzEnd: 29 },
   { number: 71, name: 'Nuh', arabicName: 'نوح', numberOfAyahs: 28, juzStart: 29, juzEnd: 29 },
   { number: 72, name: 'Al-Jinn', arabicName: 'الجن', numberOfAyahs: 28, juzStart: 29, juzEnd: 29 },
   { number: 73, name: 'Al-Muzzammil', arabicName: 'المزمل', numberOfAyahs: 20, juzStart: 29, juzEnd: 29 },
   { number: 74, name: 'Al-Muddaththir', arabicName: 'المدثر', numberOfAyahs: 56, juzStart: 29, juzEnd: 29 },
   { number: 75, name: 'Al-Qiyamah', arabicName: 'القيامة', numberOfAyahs: 40, juzStart: 29, juzEnd: 29 },
-  { number: 76, name: 'Al-Insan', arabicName: 'الانسان', numberOfAyahs: 31, juzStart: 29, juzEnd: 29 },
+  { number: 76, name: 'Al-Insan', arabicName: 'الإنسان', numberOfAyahs: 31, juzStart: 29, juzEnd: 29 },
   { number: 77, name: 'Al-Mursalat', arabicName: 'المرسلات', numberOfAyahs: 50, juzStart: 29, juzEnd: 29 },
-  { number: 78, name: 'An-Naba', arabicName: 'النبإ', numberOfAyahs: 40, juzStart: 30, juzEnd: 30 },
-  { number: 79, name: 'An-Nazi\'at', arabicName: 'النازعات', numberOfAyahs: 46, juzStart: 30, juzEnd: 30 },
+  { number: 78, name: 'An-Naba', arabicName: 'النبأ', numberOfAyahs: 40, juzStart: 30, juzEnd: 30 },
+  { number: 79, name: 'An-Naziat', arabicName: 'النازعات', numberOfAyahs: 46, juzStart: 30, juzEnd: 30 },
   { number: 80, name: 'Abasa', arabicName: 'عبس', numberOfAyahs: 42, juzStart: 30, juzEnd: 30 },
   { number: 81, name: 'At-Takwir', arabicName: 'التكوير', numberOfAyahs: 29, juzStart: 30, juzEnd: 30 },
   { number: 82, name: 'Al-Infitar', arabicName: 'الإنفطار', numberOfAyahs: 19, juzStart: 30, juzEnd: 30 },
@@ -96,28 +96,28 @@ export const surahList: Surah[] = [
   { number: 84, name: 'Al-Inshiqaq', arabicName: 'الإنشقاق', numberOfAyahs: 25, juzStart: 30, juzEnd: 30 },
   { number: 85, name: 'Al-Buruj', arabicName: 'البروج', numberOfAyahs: 22, juzStart: 30, juzEnd: 30 },
   { number: 86, name: 'At-Tariq', arabicName: 'الطارق', numberOfAyahs: 17, juzStart: 30, juzEnd: 30 },
-  { number: 87, name: 'Al-A\'la', arabicName: 'الأعلى', numberOfAyahs: 19, juzStart: 30, juzEnd: 30 },
+  { number: 87, name: 'Al-Ala', arabicName: 'الأعلى', numberOfAyahs: 19, juzStart: 30, juzEnd: 30 },
   { number: 88, name: 'Al-Ghashiyah', arabicName: 'الغاشية', numberOfAyahs: 26, juzStart: 30, juzEnd: 30 },
   { number: 89, name: 'Al-Fajr', arabicName: 'الفجر', numberOfAyahs: 30, juzStart: 30, juzEnd: 30 },
   { number: 90, name: 'Al-Balad', arabicName: 'البلد', numberOfAyahs: 20, juzStart: 30, juzEnd: 30 },
   { number: 91, name: 'Ash-Shams', arabicName: 'الشمس', numberOfAyahs: 15, juzStart: 30, juzEnd: 30 },
   { number: 92, name: 'Al-Lail', arabicName: 'الليل', numberOfAyahs: 21, juzStart: 30, juzEnd: 30 },
-  { number: 93, name: 'Ad-Dhuha', arabicName: 'الضحى', numberOfAyahs: 11, juzStart: 30, juzEnd: 30 },
+  { number: 93, name: 'Ad-Duha', arabicName: 'الضحى', numberOfAyahs: 11, juzStart: 30, juzEnd: 30 },
   { number: 94, name: 'Ash-Sharh', arabicName: 'الشرح', numberOfAyahs: 8, juzStart: 30, juzEnd: 30 },
   { number: 95, name: 'At-Tin', arabicName: 'التين', numberOfAyahs: 8, juzStart: 30, juzEnd: 30 },
-  { number: 96, name: 'Al-\'Alaq', arabicName: 'العلق', numberOfAyahs: 19, juzStart: 30, juzEnd: 30 },
+  { number: 96, name: 'Al-Alaq', arabicName: 'العلق', numberOfAyahs: 19, juzStart: 30, juzEnd: 30 },
   { number: 97, name: 'Al-Qadr', arabicName: 'القدر', numberOfAyahs: 5, juzStart: 30, juzEnd: 30 },
   { number: 98, name: 'Al-Bayyinah', arabicName: 'البينة', numberOfAyahs: 8, juzStart: 30, juzEnd: 30 },
   { number: 99, name: 'Az-Zalzalah', arabicName: 'الزلزلة', numberOfAyahs: 8, juzStart: 30, juzEnd: 30 },
-  { number: 100, name: 'Al-\'Adiyat', arabicName: 'العاديات', numberOfAyahs: 11, juzStart: 30, juzEnd: 30 },
-  { number: 101, name: 'Al-Qari\'ah', arabicName: 'القارعة', numberOfAyahs: 11, juzStart: 30, juzEnd: 30 },
+  { number: 100, name: 'Al-Adiyat', arabicName: 'العاديات', numberOfAyahs: 11, juzStart: 30, juzEnd: 30 },
+  { number: 101, name: 'Al-Qariah', arabicName: 'القارعة', numberOfAyahs: 11, juzStart: 30, juzEnd: 30 },
   { number: 102, name: 'At-Takathur', arabicName: 'التكاثر', numberOfAyahs: 8, juzStart: 30, juzEnd: 30 },
-  { number: 103, name: 'Al-\'Asr', arabicName: 'العصر', numberOfAyahs: 3, juzStart: 30, juzEnd: 30 },
+  { number: 103, name: 'Al-Asr', arabicName: 'العصر', numberOfAyahs: 3, juzStart: 30, juzEnd: 30 },
   { number: 104, name: 'Al-Humazah', arabicName: 'الهمزة', numberOfAyahs: 9, juzStart: 30, juzEnd: 30 },
   { number: 105, name: 'Al-Fil', arabicName: 'الفيل', numberOfAyahs: 5, juzStart: 30, juzEnd: 30 },
   { number: 106, name: 'Quraish', arabicName: 'قريش', numberOfAyahs: 4, juzStart: 30, juzEnd: 30 },
-  { number: 107, name: 'Al-Ma\'un', arabicName: 'الماعون', numberOfAyahs: 7, juzStart: 30, juzEnd: 30 },
-  { number: 108, name: 'Al-Kawthar', arabicName: 'الكوثر', numberOfAyahs: 3, juzStart: 30, juzEnd: 30 },
+  { number: 107, name: 'Al-Maun', arabicName: 'الماعون', numberOfAyahs: 7, juzStart: 30, juzEnd: 30 },
+  { number: 108, name: 'Al-Kauthar', arabicName: 'الكوثر', numberOfAyahs: 3, juzStart: 30, juzEnd: 30 },
   { number: 109, name: 'Al-Kafirun', arabicName: 'الكافرون', numberOfAyahs: 6, juzStart: 30, juzEnd: 30 },
   { number: 110, name: 'An-Nasr', arabicName: 'النصر', numberOfAyahs: 3, juzStart: 30, juzEnd: 30 },
   { number: 111, name: 'Al-Masad', arabicName: 'المسد', numberOfAyahs: 5, juzStart: 30, juzEnd: 30 },
@@ -127,20 +127,13 @@ export const surahList: Surah[] = [
 ];
 
 // Helper functions
-export const getSurahsByJuz = (juz: number): Surah[] => {
-  return surahList.filter(
-    (surah) => surah.juzStart <= juz && surah.juzEnd >= juz
-  );
-};
+export const getSurahsByJuz = (juz: number): Surah[] =>
+  surahList.filter(s => s.juzStart <= juz && s.juzEnd >= juz);
 
-export const getSurahByNumber = (number: number): Surah | undefined => {
-  return surahList.find((surah) => surah.number === number);
-};
+export const getSurahByNumber = (number: number): Surah | undefined =>
+  surahList.find(s => s.number === number);
 
-export const getJuzName = (juz: number): string => {
-  return `Juz ${juz}`;
-};
+export const getJuzName = (juz: number): string => `Juz ${juz}`;
 
-export const getAllJuz = (): number[] => {
-  return Array.from({ length: 30 }, (_, i) => i + 1);
-};
+export const getAllJuz = (): number[] =>
+  Array.from({ length: 30 }, (_, i) => i + 1);

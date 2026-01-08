@@ -10,16 +10,16 @@ const Index = () => {
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16">
         <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-glow shadow-lg animate-fade-in">
-            <BookOpen className="w-10 h-10 text-primary-glow" />
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r from-green-500 to-lime-500 shadow-lg animate-fade-in">
+            <BookOpen className="w-10 h-10 text-white" />
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold text-foreground animate-fade-in">
-            Tahfidz Management System
+            Aplikasi Mantaf IMIS
           </h1>
           
           <p className="text-xl text-muted-foreground animate-fade-in" style={{ animationDelay: "0.2s" }}>
-            Sistem Manajemen Hafalan Al-Qur'an yang Modern dan Terintegrasi
+            Aplikasi Manajemen Tahfidz yang Modern dan Terintegrasi
           </p>
 
           <div className="flex gap-4 justify-center animate-fade-in" style={{ animationDelay: "0.4s" }}>
@@ -61,8 +61,8 @@ const Index = () => {
               className="p-6 rounded-xl bg-card border border-border hover:shadow-lg transition-all duration-300 animate-fade-in"
               style={{ animationDelay: `${0.6 + index * 0.1}s` }}
             >
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center mb-4">
-                <feature.icon className="w-6 h-6 text-primary-glow" />
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-green-500 to-lime-500 flex items-center justify-center mb-4">
+                <feature.icon className="w-6 h-6 text-white" />
               </div>
               <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
               <p className="text-sm text-muted-foreground">{feature.description}</p>
