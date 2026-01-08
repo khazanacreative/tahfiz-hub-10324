@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, BookMarked, BookOpen, TrendingUp } from "lucide-react";
-import { Layout } from "@/components/Layout";
+import Layout from "@/components/Layout";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 export default function Dashboard() {
