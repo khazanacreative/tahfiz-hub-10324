@@ -1,10 +1,8 @@
-'use client';
-
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { 
   BookOpen, 
   Award, 
@@ -109,8 +107,8 @@ export default function DashboardSantri({ data, currentUser }: DashboardSantriPr
             Assalamu&apos;alaikum, {selectedSantri.nama_santri}
           </p>
         </div>
-        <Link href="/dashboard/santri-view/setoran">
-          <Button className="bg-gradient-to-r from-emerald-600 to-lime-600 hover:from-emerald-700 hover:to-lime-700">
+        <Link to="/santri/setoran">
+          <Button className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
             <Send className="h-4 w-4 mr-2" />
             Kirim Setoran
           </Button>
@@ -268,7 +266,7 @@ export default function DashboardSantri({ data, currentUser }: DashboardSantriPr
                 ))}
               </div>
             )}
-            <Link href="/dashboard/santri-view/progress">
+            <Link to="/santri/progress">
               <Button variant="outline" className="w-full mt-4" size="sm">
                 <FileText className="h-4 w-4 mr-2" />
                 Lihat Semua Progress
@@ -312,7 +310,7 @@ export default function DashboardSantri({ data, currentUser }: DashboardSantriPr
               ))}
             </div>
           )}
-          <Link href="/dashboard/santri-view/pengumuman">
+          <Link to="/santri/pengumuman">
             <Button variant="outline" className="w-full mt-4" size="sm">
               <Megaphone className="h-4 w-4 mr-2" />
               Lihat Semua Pengumuman
