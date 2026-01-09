@@ -29,7 +29,6 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-<<<<<<< HEAD
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/setoran" element={<SetoranHafalan />} />
@@ -45,11 +44,9 @@ const App = () => (
             <Route path="/profil" element={<Profil />} />
             <Route path="/pengaturan" element={<Pengaturan />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-=======
             {/* Landing & Auth */}
             <Route path="/" element={<LandingMobile />} />
-            <Route path="/auth" element={<AuthUstadz />} />
-            
+            <Route path="/auth" element={<AuthUstadz />} />            
             {/* Ustadz Mobile Routes */}
             <Route path="/ustadz" element={<DashboardMobile />} />
             <Route path="/ustadz/setoran" element={<SetoranMobile />} />
@@ -57,9 +54,6 @@ const App = () => (
             <Route path="/ustadz/tahfidz" element={<TahfidzMobile />} />
             <Route path="/ustadz/tasmi" element={<TasmiMobile />} />
             <Route path="/ustadz/profil" element={<ProfilMobile />} />
-            
-            {/* Catch-all */}
->>>>>>> 30aa76ab00268fbec3c96446cf56ce0d2c47fcf6
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
