@@ -29,7 +29,7 @@ export function MobileLayout({ children }: MobileLayoutProps) {
       <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 safe-area-bottom">
         <div className="flex items-center justify-around h-16">
           {navItems.map((item) => {
-            const isActive = location.pathname === item.path;
+            const isActive = location.pathname.startsWith(item.path);
             return (
               <NavLink
                 key={item.path}
