@@ -8,7 +8,7 @@ interface MobileLayoutProps {
 }
 
 const navItems = [
-  { path: "/ustadz/dashboard", label: "Home", icon: Home },
+  { path: "/ustadz", label: "Home", icon: Home },
   { path: "/ustadz/setoran", label: "Setoran", icon: BookOpen },
   { path: "/ustadz/drill", label: "Drill", icon: Target },
   { path: "/ustadz/tasmi", label: "Tasmi'", icon: Award },
