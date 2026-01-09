@@ -66,7 +66,7 @@ export default function ProfilMobile() {
     try {
       await supabase.auth.signOut();
       toast.success("Berhasil logout");
-      navigate("/", { replace: true });
+      navigate("/", { replace: true }); // ⬅ LandingMobile
     } catch (error) {
       toast.error("Gagal logout");
     }
