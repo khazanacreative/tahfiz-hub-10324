@@ -6,11 +6,11 @@ export default function LandingMobile() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-lime-100/40 via-white to-white">
       {/* Hero Section */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 text-center">
         {/* Logo/Icon */}
-        <div className="w-24 h-24 bg-emerald-50 rounded-3xl flex items-center justify-center mb-6 border border-emerald-100">
+        <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center mb-6 border border-emerald-100 shadow-sm">
           <BookOpen className="w-12 h-12 text-emerald-600" />
         </div>
 
@@ -24,15 +24,15 @@ export default function LandingMobile() {
 
         {/* Features */}
         <div className="grid grid-cols-3 gap-4 mb-10 w-full max-w-sm">
-          <div className="bg-white border border-gray-200 rounded-2xl p-4 text-center">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 text-center shadow-sm">
             <Users className="w-7 h-7 text-emerald-600 mx-auto mb-2" />
             <span className="text-xs text-gray-700">Data Santri</span>
           </div>
-          <div className="bg-white border border-gray-200 rounded-2xl p-4 text-center">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 text-center shadow-sm">
             <BookOpen className="w-7 h-7 text-emerald-600 mx-auto mb-2" />
             <span className="text-xs text-gray-700">Setoran</span>
           </div>
-          <div className="bg-white border border-gray-200 rounded-2xl p-4 text-center">
+          <div className="bg-white border border-gray-200 rounded-2xl p-4 text-center shadow-sm">
             <Award className="w-7 h-7 text-emerald-600 mx-auto mb-2" />
             <span className="text-xs text-gray-700">Penilaian</span>
           </div>
@@ -49,7 +49,7 @@ export default function LandingMobile() {
       <div className="px-6 pb-10 space-y-3">
         <Button
           onClick={() => navigate("/auth")}
-          className="w-full h-14 bg-emerald-600 hover:bg-emerald-700 text-white text-lg font-semibold rounded-2xl shadow"
+          className="w-full h-14 bg-emerald-600 hover:bg-emerald-700 text-white text-lg font-semibold rounded-2xl shadow-md"
         >
           Masuk
           <ChevronRight className="w-5 h-5 ml-2" />
