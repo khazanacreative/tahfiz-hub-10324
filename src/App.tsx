@@ -29,6 +29,23 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+<<<<<<< HEAD
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/setoran" element={<SetoranHafalan />} />
+            <Route path="/drill" element={<DrillHafalan />} />
+            <Route path="/ujian-tasmi" element={<UjianTasmi />} />
+            <Route path="/ujian-tahfidz" element={<UjianTahfidz />} />
+            <Route path="/santri" element={<DataSantri />} />
+            <Route path="/halaqoh" element={<DataHalaqoh />} />
+            <Route path="/kelas" element={<DataKelas />} />
+            <Route path="/ustadz" element={<DataUstadz />} />
+            <Route path="/users" element={<DataUsers />} />
+            {/* Profil & Pengaturan */}
+            <Route path="/profil" element={<Profil />} />
+            <Route path="/pengaturan" element={<Pengaturan />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+=======
             {/* Landing & Auth */}
             <Route path="/" element={<LandingMobile />} />
             <Route path="/auth" element={<AuthUstadz />} />
@@ -42,6 +59,7 @@ const App = () => (
             <Route path="/ustadz/profil" element={<ProfilMobile />} />
             
             {/* Catch-all */}
+>>>>>>> 30aa76ab00268fbec3c96446cf56ce0d2c47fcf6
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
