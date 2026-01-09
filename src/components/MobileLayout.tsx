@@ -1,10 +1,11 @@
 import { ReactNode } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Home, BookOpen, Target, Award, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface MobileLayoutProps {
   children: ReactNode;
+  title?: string;
 }
 
 const navItems = [
@@ -44,8 +45,8 @@ export default function MobileLayout({ children, title }: MobileLayoutProps) {
                 onClick={() => navigate(item.path)}
                 className={cn(
                   "flex flex-col items-center justify-center w-full h-full transition-colors",
-                  isActive 
-                    ? "text-primary" 
+                  isActive
+                    ? "text-primary"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
