@@ -137,8 +137,7 @@ export default function AuthUstadz() {
               Akun Demo:
             </p>
             <div className="text-xs text-center text-muted-foreground space-y-1">
-              <p><strong>Ustadz:</strong> ustadz@mantaf.id / ustadz123</p>
-              <p><strong>Wali:</strong> wali@mantaf.id / wali123</p>
+              <p><strong>Ustadz:</strong> mochaburi4@gmail.com / 123456</p>
             </div>
           </div>
         </CardContent>
