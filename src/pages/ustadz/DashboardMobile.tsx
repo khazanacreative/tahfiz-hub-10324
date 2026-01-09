@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MobileLayout } from "@/components/MobileLayout";
+import MobileLayout from "@/components/MobileLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -61,12 +61,12 @@ export default function DashboardMobile() {
       if (user) {
         const { data: profileData } = await supabase
           .from("profiles")
-          .select("full_name")
-          .eq("user_id", user.id)
+          .select("nama_lengkap")
+          .eq("id", user.id)
           .single();
 
         setProfile({
-          namaLengkap: profileData?.full_name || user.user_metadata?.nama_lengkap || "Ustadz",
+          namaLengkap: profileData?.nama_lengkap || user.user_metadata?.nama_lengkap || "Ustadz",
           email: user.email || "",
         });
       }

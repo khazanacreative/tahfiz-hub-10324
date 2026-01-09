@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Layout } from "@/components/Layout";
+import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -49,12 +49,14 @@ export default function DataSantri() {
 
   useEffect(() => {
     const fetchFilters = async () => {
-      const [halaqohRes, kelasRes] = await Promise.all([
-        supabase.from("halaqoh").select("id, nama_halaqoh").order("nama_halaqoh"),
-        supabase.from("kelas").select("id, nama_kelas").order("nama_kelas"),
-      ]);
+      const halaqohRes = await supabase.from("halaqoh").select("id, nama_halaqoh").order("nama_halaqoh");
       if (halaqohRes.data) setHalaqohList(halaqohRes.data);
-      if (kelasRes.data) setKelasList(kelasRes.data);
+      // Use mock kelas data since table doesn't exist
+      setKelasList([
+        { id: "1", nama_kelas: "KBTK A" },
+        { id: "2", nama_kelas: "Paket A Kelas 6" },
+        { id: "3", nama_kelas: "Paket B Kelas 8" },
+      ]);
     };
     fetchFilters();
   }, []);

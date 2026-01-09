@@ -27,13 +27,14 @@ export default function AuthUstadz() {
         .eq("user_id", userId)
         .single();
 
-      if (roles?.role === "asatidz") {
-        navigate("/ustadz/dashboard", { replace: true });
-      } else if (roles?.role === "wali_santri") {
-        navigate("/ustadz/profil", { replace: true }); // Wali santri page
-      } else if (roles?.role === "admin") {
-        toast.error("Akun admin tidak bisa login di aplikasi mobile");
-        await supabase.auth.signOut();
+      if (roles?.role === "Asatidz") {
+        navigate("/ustadz", { replace: true });
+      } else if (roles?.role === "WaliSantri") {
+        navigate("/ustadz/profil", { replace: true });
+      } else if (roles?.role === "Admin" || roles?.role === "Koordinator") {
+        navigate("/ustadz", { replace: true });
+      } else {
+        navigate("/ustadz", { replace: true });
       }
     };
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MobileLayout } from "@/components/MobileLayout";
+import MobileLayout from "@/components/MobileLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,8 +10,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Plus, Award, CheckCircle2, XCircle, ChevronUp, ChevronDown, Layers } from "lucide-react";
 import { toast } from "sonner";
 import { JuzSelector } from "@/components/JuzSelector";
-import { MobileFilters, FilterValues } from "@/components/MobileFilters";
+import MobileFilters from "@/components/MobileFilters";
 import { getJuzName } from "@/lib/quran-data";
+
+interface FilterValues {
+  periode: string;
+  halaqoh: string;
+  santri: string;
+}
 
 const mockSantri = [
   { id: "1", nama: "Muhammad Faiz", nis: "S001" },
