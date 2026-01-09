@@ -108,18 +108,23 @@ export default function DashboardMobile() {
                   </div>
                 </div>
               </div>
-              <Button
-                variant="secondary"
-                size="icon"
-                className="rounded-full h-12 w-12 bg-white/20 hover:bg-white/30 border-2 border-white/50"
-                onClick={() => navigate("/ustadz/profil")}
-              >
-                <Avatar className="h-10 w-10">
-                  <AvatarFallback className="bg-white text-emerald-700 font-bold">
-                    {getInitials(profile?.namaLengkap || "U")}
-                  </AvatarFallback>
-                </Avatar>
-              </Button>
+              <div className="flex flex-col items-center gap-1">
+                <Button
+                  variant="secondary"
+                  size="icon"
+                  className="rounded-full h-12 w-12 bg-white/20 hover:bg-white/30 border-2 border-white/50"
+                  onClick={() => navigate("/ustadz/profil")}
+                >
+                  <Avatar className="h-10 w-10">
+                    <AvatarFallback className="bg-white text-emerald-700 font-bold">
+                      {getInitials(profile?.namaLengkap || "U")}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+                <span className="text-xs text-white/90 font-medium">
+                  Profil
+                </span>
+              </div>
             </div>
           </CardContent>
         </Card>
