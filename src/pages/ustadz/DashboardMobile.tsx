@@ -83,15 +83,15 @@ export default function DashboardMobile() {
   };
 
   const menuItems = [
-    { icon: BookOpen, label: "Setoran", route: "/ustadz/setoran", color: "bg-emerald-500" },
-    { icon: ClipboardCheck, label: "Drill", route: "/ustadz/drill", color: "bg-teal-500" },
-    { icon: GraduationCap, label: "Tasmi'", route: "/ustadz/tasmi", color: "bg-cyan-500" },
-    { icon: Award, label: "Ujian Tahfidz", route: "/ustadz/tahfidz", color: "bg-emerald-600" },
-    { icon: UsersRound, label: "Data Siswa", route: "/ustadz/data-siswa", color: "bg-teal-600" },
-    { icon: Users, label: "Halaqoh", route: "/ustadz/halaqoh", color: "bg-cyan-600" },
-    { icon: FileText, label: "Laporan", route: "/ustadz/laporan", color: "bg-emerald-700" },
-    { icon: BarChart3, label: "Rapor", route: "/ustadz/rapor", color: "bg-teal-700" },
-  ];
+  { icon: BookOpen, label: "Setoran", route: "/ustadz/setoran" },
+  { icon: ClipboardCheck, label: "Drill", route: "/ustadz/drill" },
+  { icon: GraduationCap, label: "Tasmi'", route: "/ustadz/tasmi" },
+  { icon: Award, label: "Ujian Tahfidz", route: "/ustadz/tahfidz" },
+  { icon: UsersRound, label: "Data Siswa", route: "/ustadz/data-siswa" },
+  { icon: Users, label: "Halaqoh", route: "/ustadz/halaqoh" },
+  { icon: FileText, label: "Laporan", route: "/ustadz/laporan" },
+  { icon: BarChart3, label: "Rapor", route: "/ustadz/rapor" },
+];
 
   const getCategoryColor = (kategori: string) => {
     switch (kategori) {
@@ -108,17 +108,15 @@ export default function DashboardMobile() {
 
   return (
     <MobileLayout>
-      <div className="min-h-screen bg-gradient-to-b from-emerald-500 via-emerald-400 to-teal-400">
+      <div className="min-h-screen bg-white">
         {/* Header */}
-        <div className="px-4 pt-4 pb-2">
+        <div className="bg-gradient-to-r from-emerald-400 to-amber-400 px-4 pt-4 pb-6 rounded-b-3xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                <GraduationCap className="w-5 h-5 text-white" />
-              </div>
+              <GraduationCap className="w-6 h-6 text-white" />
               <h1 className="text-xl font-bold text-white">Mantaf IMIS</h1>
             </div>
-            <button className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+            <button className="w-10 h-10 bg-white/30 rounded-full flex items-center justify-center">
               <Bell className="w-5 h-5 text-white" />
             </button>
           </div>
@@ -126,7 +124,7 @@ export default function DashboardMobile() {
 
         {/* Profile Card */}
         <div className="px-4 pb-4">
-          <Card className="bg-white/95 backdrop-blur border-0 shadow-lg">
+          <Card className="bg-white border border-border shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3 pb-3 border-b border-border/50">
                 <Avatar className="h-12 w-12 ring-2 ring-emerald-500/30">
@@ -158,25 +156,21 @@ export default function DashboardMobile() {
         </div>
 
         {/* Menu Icons Grid */}
-        <div className="px-4 pb-4">
-          <div className="grid grid-cols-4 gap-3">
-            {menuItems.map((item, index) => (
-              <button
-                key={index}
-                onClick={() => navigate(item.route)}
-                className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/10 backdrop-blur hover:bg-white/20 transition-all active:scale-95"
-              >
-                <div className="w-14 h-14 rounded-xl bg-white shadow-md flex items-center justify-center">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-                    <item.icon className="w-5 h-5 text-white" />
-                  </div>
-                </div>
-                <span className="text-xs font-medium text-white text-center leading-tight">
-                  {item.label}
-                </span>
-              </button>
-            ))}
-          </div>
+        <div className="grid grid-cols-4 gap-4">
+          {menuItems.map((item, index) => (
+            <button
+              key={index}
+              onClick={() => navigate(item.route)}
+              className="flex flex-col items-center gap-2 p-3 rounded-2xl bg-muted hover:bg-muted/70 active:scale-95 transition"
+            >
+              <div className="w-14 h-14 rounded-xl bg-white shadow flex items-center justify-center">
+                <item.icon className="w-7 h-7 text-emerald-600" />
+              </div>
+              <span className="text-xs font-medium text-foreground text-center">
+                {item.label}
+              </span>
+            </button>
+          ))}
         </div>
 
         {/* Reminder Card */}
@@ -205,7 +199,7 @@ export default function DashboardMobile() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-foreground flex items-center gap-2">
-                <Megaphone className="w-4 h-4 text-primary" />
+                <Megaphone className="w-4 h-4 text-emerald-600" />
                 Informasi dan pengumuman!
               </h3>
               <button className="text-sm text-primary font-medium">Lihat Semua</button>
