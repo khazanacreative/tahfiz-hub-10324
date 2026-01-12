@@ -123,8 +123,8 @@ export default function TasmiMobile() {
             </div>
               <Award className="w-10 h-10 opacity-50" />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Add Buttons */}
         <div className="space-y-2">
