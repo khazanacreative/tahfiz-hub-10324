@@ -124,7 +124,6 @@ export default function TasmiMobile() {
               <Award className="w-10 h-10 opacity-50" />
             </div>
           </div>
-        </div>
 
         {/* Add Buttons */}
         <div className="space-y-2">
