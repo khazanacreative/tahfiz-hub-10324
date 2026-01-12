@@ -78,7 +78,7 @@ export default function ProfilMobile() {
   <MobileLayout>
 
     {/* HEADER */}
-    <div className="bg-gradient-to-br from-green-500 to-lime-500">
+    <div className="bg-gradient-to-br from-emerald-500 to-amber-500">
       <div className="px-4 pt-4 pb-16 flex items-center justify-between">
 
         {/* Left */}
