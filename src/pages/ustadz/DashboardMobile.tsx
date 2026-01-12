@@ -4,56 +4,60 @@ import MobileLayout from "@/components/MobileLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   Users, 
   BookOpen, 
+  ClipboardCheck,
   GraduationCap,
-  ChevronDown,
-  ChevronUp,
+  BarChart3,
+  User,
+  UsersRound,
+  FileText,
+  Award,
   Megaphone,
-  Info
+  Bell,
+  ChevronRight
 } from "lucide-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-// Mock data - akan diganti dengan data dari Supabase
-const mockHalaqoh = [
+const mockPengumuman = [
   { 
-    id: "1", 
-    nama: "Halaqoh Al-Azhary", 
-    jumlahSantri: 8, 
-    jadwal: "Senin, Rabu, Jumat",
-    santri: [
-      { id: "1", nama: "Muhammad Faiz", nis: "S001", juzTerakhir: 30 },
-      { id: "2", nama: "Aisyah Nur", nis: "S002", juzTerakhir: 29 },
-      { id: "5", nama: "Abdullah Rahman", nis: "S005", juzTerakhir: 28 },
-      { id: "6", nama: "Khadijah Sari", nis: "S006", juzTerakhir: 27 },
-    ]
+    id: 1, 
+    kategori: "Informasi",
+    judul: "Panduan Lengkap Ujian & Penilaian Tahfidz", 
+    tanggal: "24 Januari 2026",
   },
   { 
-    id: "2", 
-    nama: "Halaqoh Al-Furqon", 
-    jumlahSantri: 6, 
-    jadwal: "Selasa, Kamis, Sabtu",
-    santri: [
-      { id: "3", nama: "Fatimah Zahra", nis: "S003", juzTerakhir: 30 },
-      { id: "4", nama: "Ahmad Fauzi", nis: "S004", juzTerakhir: 28 },
-      { id: "7", nama: "Umar Hasan", nis: "S007", juzTerakhir: 26 },
-    ]
+    id: 2, 
+    kategori: "Pengumuman",
+    judul: "Ujian Tahfidz Dimulai Tanggal 27 Januari 2026", 
+    tanggal: "24 Januari 2026",
+  },
+  { 
+    id: 3, 
+    kategori: "Reminder",
+    judul: "Deadline Rapor Semester Ganjil 30 Januari 2026", 
+    tanggal: "23 Januari 2026",
   },
 ];
 
-const mockPengumuman = [
-  { id: 1, judul: "Libur Tahun Baru", tanggal: "01/01/2025", isi: "Kegiatan halaqoh diliburkan tanggal 1 Januari 2025" },
-  { id: 2, judul: "Ujian Tasmi' Semester", tanggal: "15/01/2025", isi: "Ujian tasmi' semester akan dilaksanakan mulai 15 Januari" },
-  { id: 3, judul: "Pembagian Rapor", tanggal: "20/01/2025", isi: "Pembagian rapor semester ganjil di aula utama" },
+const penilaianOptions = [
+  { id: "drill", label: "Drill", route: "/ustadz/drill" },
+  { id: "tasmi1", label: "Tasmi' 1 Juz", route: "/ustadz/tasmi" },
+  { id: "tasmi5", label: "Tasmi' 5 Juz", route: "/ustadz/tasmi" },
+  { id: "ujian", label: "Ujian Tahfidz", route: "/ustadz/tahfidz" },
 ];
 
 export default function DashboardMobile() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<{ namaLengkap: string; email: string } | null>(null);
-  const [expandedHalaqoh, setExpandedHalaqoh] = useState<string[]>([]);
+  const [showPenilaianDialog, setShowPenilaianDialog] = useState(false);
 
   useEffect(() => {
     const getProfile = async () => {
@@ -63,7 +67,7 @@ export default function DashboardMobile() {
           .from("profiles")
           .select("nama_lengkap")
           .eq("id", user.id)
-          .single();
+          .maybeSingle();
 
         setProfile({
           namaLengkap: profileData?.nama_lengkap || user.user_metadata?.nama_lengkap || "Ustadz",
@@ -74,148 +78,184 @@ export default function DashboardMobile() {
     getProfile();
   }, []);
 
-  const toggleHalaqoh = (id: string) => {
-    setExpandedHalaqoh(prev => 
-      prev.includes(id) ? prev.filter(h => h !== id) : [...prev, id]
-    );
-  };
-
-  const totalSantri = mockHalaqoh.reduce((acc, h) => acc + h.santri.length, 0);
-  const totalHalaqoh = mockHalaqoh.length;
-
   const getInitials = (name: string) => {
     return name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase();
   };
 
+  const menuItems = [
+    { icon: BookOpen, label: "Setoran", route: "/ustadz/setoran", color: "bg-emerald-500" },
+    { icon: ClipboardCheck, label: "Drill", route: "/ustadz/drill", color: "bg-teal-500" },
+    { icon: GraduationCap, label: "Tasmi'", route: "/ustadz/tasmi", color: "bg-cyan-500" },
+    { icon: Award, label: "Ujian Tahfidz", route: "/ustadz/tahfidz", color: "bg-emerald-600" },
+    { icon: UsersRound, label: "Data Siswa", route: "/ustadz/data-siswa", color: "bg-teal-600" },
+    { icon: Users, label: "Halaqoh", route: "/ustadz/halaqoh", color: "bg-cyan-600" },
+    { icon: FileText, label: "Laporan", route: "/ustadz/laporan", color: "bg-emerald-700" },
+    { icon: BarChart3, label: "Rapor", route: "/ustadz/rapor", color: "bg-teal-700" },
+  ];
+
+  const getCategoryColor = (kategori: string) => {
+    switch (kategori) {
+      case "Informasi":
+        return "bg-purple-100 text-purple-700";
+      case "Pengumuman":
+        return "bg-amber-100 text-amber-700";
+      case "Reminder":
+        return "bg-blue-100 text-blue-700";
+      default:
+        return "bg-muted text-muted-foreground";
+    }
+  };
+
   return (
     <MobileLayout>
-      <div className="p-4 space-y-4">
-        {/* Welcome Card with Profile Button */}
-        <Card className="bg-gradient-to-br from-emerald-500 to-teal-500 border-0 text-white">
-          <CardContent className="pt-4 pb-4">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <p className="text-sm text-white/80">Assalamu'alaikum,</p>
-                <h2 className="text-xl font-bold">{profile?.namaLengkap || "Ustadz"}</h2>
-                <div className="flex items-center gap-4 mt-3">
-                  <div className="flex items-center gap-1">
-                    <Users className="w-4 h-4" />
-                    <span className="text-sm">{totalSantri} Santri</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <BookOpen className="w-4 h-4" />
-                    <span className="text-sm">{totalHalaqoh} Halaqoh</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="rounded-full h-12 w-12 bg-white/20 hover:bg-white/30 border-2 border-white/50"
-                  onClick={() => navigate("/ustadz/profil")}
-                >
-                  <Avatar className="h-10 w-10">
-                    <AvatarFallback className="bg-white text-emerald-700 font-bold">
-                      {getInitials(profile?.namaLengkap || "U")}
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-                <span className="text-xs text-white/90 font-medium">
-                  Profil
-                </span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Halaqoh Section - Clickable */}
-        <div className="space-y-3">
+      <div className="min-h-screen bg-gradient-to-b from-emerald-500 via-emerald-400 to-teal-400">
+        {/* Header */}
+        <div className="px-4 pt-4 pb-2">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold">Halaqoh Saya</h3>
-            <Badge variant="outline">{totalHalaqoh} halaqoh</Badge>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                <GraduationCap className="w-5 h-5 text-white" />
+              </div>
+              <h1 className="text-xl font-bold text-white">Mantaf IMIS</h1>
+            </div>
+            <button className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+              <Bell className="w-5 h-5 text-white" />
+            </button>
           </div>
-          {mockHalaqoh.map((halaqoh) => (
-            <Collapsible 
-              key={halaqoh.id} 
-              open={expandedHalaqoh.includes(halaqoh.id)}
-              onOpenChange={() => toggleHalaqoh(halaqoh.id)}
-            >
-              <Card>
-                <CollapsibleTrigger asChild>
-                  <CardContent className="p-4 cursor-pointer hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-1">
-                        <p className="font-semibold">{halaqoh.nama}</p>
-                        <p className="text-sm text-muted-foreground">{halaqoh.jadwal}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge className="bg-emerald-500">
-                          <Users className="w-3 h-3 mr-1" />
-                          {halaqoh.santri.length} santri
-                        </Badge>
-                        {expandedHalaqoh.includes(halaqoh.id) ? (
-                          <ChevronUp className="w-4 h-4 text-muted-foreground" />
-                        ) : (
-                          <ChevronDown className="w-4 h-4 text-muted-foreground" />
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <div className="px-4 pb-4 space-y-2 border-t pt-3">
-                    {halaqoh.santri.map((santri) => (
-                      <div key={santri.id} className="flex items-center gap-3 p-2 bg-muted/30 rounded-lg">
-                        <Avatar className="h-8 w-8">
-                          <AvatarFallback className="bg-emerald-100 text-emerald-700 text-xs">
-                            {getInitials(santri.nama)}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium text-sm truncate">{santri.nama}</p>
-                          <p className="text-xs text-muted-foreground">{santri.nis}</p>
-                        </div>
-                        <Badge variant="secondary" className="text-xs">
-                          <GraduationCap className="w-3 h-3 mr-1" />
-                          Juz {santri.juzTerakhir}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Card>
-            </Collapsible>
-          ))}
         </div>
 
-        {/* Pengumuman Section */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="font-semibold flex items-center gap-2">
-              <Megaphone className="w-4 h-4" />
-              Pengumuman
-            </h3>
-            <Badge variant="outline">{mockPengumuman.length} baru</Badge>
-          </div>
-          {mockPengumuman.map((pengumuman) => (
-            <Card key={pengumuman.id}>
-              <CardContent className="p-4">
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                    <Info className="w-4 h-4 text-amber-600" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-sm">{pengumuman.judul}</p>
-                    <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{pengumuman.isi}</p>
-                    <p className="text-xs text-muted-foreground mt-2">{pengumuman.tanggal}</p>
+        {/* Profile Card */}
+        <div className="px-4 pb-4">
+          <Card className="bg-white/95 backdrop-blur border-0 shadow-lg">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3 pb-3 border-b border-border/50">
+                <Avatar className="h-12 w-12 ring-2 ring-emerald-500/30">
+                  <AvatarFallback className="bg-emerald-100 text-emerald-700 font-bold">
+                    {getInitials(profile?.namaLengkap || "U")}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <h2 className="font-bold text-foreground">{profile?.namaLengkap || "Ustadz"}</h2>
+                  <p className="text-sm text-muted-foreground">Ustadz Pengampu</p>
+                </div>
+              </div>
+              <div className="flex justify-between mt-3 text-center">
+                <div className="flex-1">
+                  <p className="text-xs text-muted-foreground">Jumlah Siswa</p>
+                  <p className="font-bold text-lg text-foreground">16</p>
+                </div>
+                <div className="flex-1 border-x border-border/50">
+                  <p className="text-xs text-muted-foreground">Jumlah Halaqoh</p>
+                  <p className="font-bold text-lg text-foreground">2</p>
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs text-muted-foreground">Jumlah Penilaian</p>
+                  <p className="font-bold text-lg text-foreground">57</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Menu Icons Grid */}
+        <div className="px-4 pb-4">
+          <div className="grid grid-cols-4 gap-3">
+            {menuItems.map((item, index) => (
+              <button
+                key={index}
+                onClick={() => navigate(item.route)}
+                className="flex flex-col items-center gap-2 p-3 rounded-xl bg-white/10 backdrop-blur hover:bg-white/20 transition-all active:scale-95"
+              >
+                <div className="w-14 h-14 rounded-xl bg-white shadow-md flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
+                    <item.icon className="w-5 h-5 text-white" />
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+                <span className="text-xs font-medium text-white text-center leading-tight">
+                  {item.label}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Reminder Card */}
+        <div className="px-4 pb-4">
+          <Card className="bg-gradient-to-r from-amber-500 to-yellow-500 border-0 overflow-hidden">
+            <CardContent className="p-4 flex items-center gap-3">
+              <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                <FileText className="w-8 h-8 text-white" />
+              </div>
+              <div className="flex-1">
+                <p className="text-white font-semibold text-sm">
+                  Yuk biasakan untuk tidak lupa membuat laporan harian mengenai pekerjaanmu!
+                </p>
+                <button className="flex items-center gap-1 mt-2 text-white/90 text-sm font-medium">
+                  Buat Laporan Harian
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Content Area */}
+        <div className="bg-background rounded-t-3xl min-h-[300px] px-4 pt-5 pb-24">
+          {/* Pengumuman Section */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-foreground flex items-center gap-2">
+                <Megaphone className="w-4 h-4 text-primary" />
+                Informasi dan pengumuman!
+              </h3>
+              <button className="text-sm text-primary font-medium">Lihat Semua</button>
+            </div>
+            
+            {mockPengumuman.map((item) => (
+              <Card key={item.id} className="bg-card border border-border/50 shadow-sm">
+                <CardContent className="p-4">
+                  <Badge 
+                    variant="secondary" 
+                    className={`mb-2 text-xs font-medium ${getCategoryColor(item.kategori)}`}
+                  >
+                    {item.kategori}
+                  </Badge>
+                  <h4 className="font-semibold text-foreground text-sm leading-snug">
+                    {item.judul}
+                  </h4>
+                  <p className="text-xs text-muted-foreground mt-2">{item.tanggal}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
+
+      {/* Penilaian Dialog */}
+      <Dialog open={showPenilaianDialog} onOpenChange={setShowPenilaianDialog}>
+        <DialogContent className="max-w-[90%] rounded-xl">
+          <DialogHeader>
+            <DialogTitle className="text-center">Pilih Jenis Penilaian</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-3 pt-2">
+            {penilaianOptions.map((option) => (
+              <button
+                key={option.id}
+                onClick={() => {
+                  setShowPenilaianDialog(false);
+                  navigate(option.route);
+                }}
+                className="p-4 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 hover:from-emerald-100 hover:to-teal-100 transition-all active:scale-95"
+              >
+                <div className="w-10 h-10 mx-auto mb-2 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
+                  <ClipboardCheck className="w-5 h-5 text-white" />
+                </div>
+                <p className="text-sm font-medium text-foreground">{option.label}</p>
+              </button>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </MobileLayout>
   );
 }
