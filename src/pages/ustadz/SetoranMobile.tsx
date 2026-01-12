@@ -287,6 +287,7 @@ export default function SetoranMobile() {
           ))}
         </div>
       </div>
+     </div>
     </MobileLayout>
   );
 }
