@@ -11,6 +11,13 @@ export default function ProgressMobile() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
+const dummySantriProgress = 
+[ { id: "1", nama: "Ahmad Fauzi", halaqoh: "Al-Fatih", totalJuz: 30, juzSelesai: 8, juzSedangDihafal: 9, }, 
+  { id: "2", nama: "Muhammad Rizki", halaqoh: "Al-Fatih", totalJuz: 30, juzSelesai: 5, juzSedangDihafal: 6, }, 
+  { id: "3", nama: "Abdullah Hakim", halaqoh: "An-Nur", totalJuz: 30, juzSelesai: 12, juzSedangDihafal: 13, }, 
+  { id: "4", nama: "Bilal Rahman", halaqoh: "Al-Fatih", totalJuz: 30, juzSelesai: 3, juzSedangDihafal: 4, }, 
+];
+
   const filteredData = dummySantriProgress.filter((item) =>
     item.nama.toLowerCase().includes(searchQuery.toLowerCase())
   );
