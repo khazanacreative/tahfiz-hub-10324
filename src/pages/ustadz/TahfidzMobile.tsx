@@ -101,8 +101,7 @@ export default function TahfidzMobile() {
 
   return (
     <MobileLayout>
-      <div className="p-4 space-y-4">
-        {/* HEADER */}
+      {/* HEADER */}
         <div className="bg-gradient-to-r from-purple-500 to-pink-500">
           <div className="px-4 pt-4 pb-16 flex items-center justify-between">
             {/* Left */}
