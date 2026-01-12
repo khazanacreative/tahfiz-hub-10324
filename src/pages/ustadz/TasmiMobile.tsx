@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Award, CheckCircle2, XCircle, ChevronUp, ChevronDown, Layers } from "lucide-react";
+import { ArrowLeft, Plus, Award, CheckCircle2, XCircle, ChevronUp, ChevronDown, Layers } from "lucide-react";
 import { toast } from "sonner";
 import { JuzSelector } from "@/components/JuzSelector";
 import MobileFilters from "@/components/MobileFilters";
@@ -108,13 +108,19 @@ export default function TasmiMobile() {
     <MobileLayout>
       <div className="p-4 space-y-4">
         {/* Header Card */}
-        <Card className="bg-gradient-to-r from-amber-500 to-orange-500 border-0 text-white">
-          <CardContent className="pt-4 pb-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-bold">Ujian Tasmi'</h2>
+          <div className="px-4 pt-4 pb-6">
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => navigate("/ustadz")}
+                className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"
+              >
+                <ArrowLeft className="w-5 h-5 text-white" />
+              </button>
+            <div>
+              <h1 className="text-xl font-bold text-white">Ujian Tasmi'</h1>
                 <p className="text-sm text-white/80">Ujian hafalan 1 juz</p>
-              </div>
+            </div>
+            </div>
               <Award className="w-10 h-10 opacity-50" />
             </div>
           </CardContent>
