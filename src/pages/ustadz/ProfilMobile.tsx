@@ -91,13 +91,12 @@ export default function ProfilMobile() {
           </button>
 
           <div>
-            <h1 className="text-xl font-bold text-white">Judul Halaman</h1>
-            <p className="text-sm text-white/80">Deskripsi halaman</p>
+            <h1 className="text-xl font-bold text-white">Profil Ustadz</h1>
           </div>
         </div>
 
         {/* Right icon */}
-        <Target className="w-8 h-8 text-white/60" />
+        <User className="w-8 h-8 text-white/60" />
       </div>
     </div>
 
