@@ -14,7 +14,7 @@ const penilaianOptions = [
   { 
     id: "drill", 
     label: "Drill", 
-    description: "Latihan hafalan harian dengan metode drill",
+    description: "Pemantapan hafalan dengan metode drill",
     route: "/ustadz/drill",
     icon: ClipboardCheck,
     color: "from-emerald-400 to-emerald-600"
