@@ -112,6 +112,9 @@ export default function DrillMobile() {
           <h1 className="text-xl font-bold text-white">Drill Hafalan</h1>
           <p className="text-sm text-white/80">Tahapan drill santri</p>
         </div>
+
+        {/* Right icon */}
+        <Target className="w-8 h-8 text-white/60" />
       </div>
     </div>
 
