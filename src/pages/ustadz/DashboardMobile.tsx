@@ -157,35 +157,40 @@ export default function DashboardMobile() {
 
         {/* Menu Icons Grid */}
         <div className="px-4 pb-4">
-          {menuItems.map((item, index) => (
-            <button
-              key={index}
-              onClick={() => navigate(item.route)}
-              className="
-                flex flex-col items-center gap-1.5
-                px-2 py-3
-                rounded-xl
-                border border-emerald-300
-                bg-transparent
-                hover:bg-emerald-50
-                active:scale-95
-                transition
-              "
-            >
-              <div className="
-                w-12 h-12
-                rounded-lg
-                bg-gradient-to-br from-emerald-500 to-lime-400
-                flex items-center justify-center
-                shadow-sm
-              ">
-                <item.icon className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-[11px] font-medium text-foreground text-center leading-tight">
-                {item.label}
-              </span>
-            </button>
-          ))}
+          <div className="grid grid-cols-4 gap-4">
+            {menuItems.map((item, index) => (
+              <button
+                key={index}
+                onClick={() => navigate(item.route)}
+                className="
+                  w-full
+                  flex flex-col items-center
+                  gap-1.5
+                  px-2 py-3
+                  rounded-xl
+                  border border-emerald-300
+                  bg-transparent
+                  hover:bg-emerald-50
+                  active:scale-95
+                  transition
+                "
+              >
+                <div className="
+                  w-12 h-12
+                  rounded-lg
+                  bg-gradient-to-br from-emerald-500 to-lime-400
+                  flex items-center justify-center
+                  shadow-sm
+                ">
+                  <item.icon className="w-6 h-6 text-white" />
+                </div>
+
+                <span className="text-[11px] font-medium text-foreground text-center leading-tight">
+                  {item.label}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Reminder Card */}
