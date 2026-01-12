@@ -10,7 +10,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { Plus, Target, CalendarIcon, CheckCircle, XCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Target, CalendarIcon, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { JuzSelector } from "@/components/JuzSelector";
 import MobileFilters from "@/components/MobileFilters";
@@ -96,17 +97,37 @@ export default function DrillMobile() {
 
   return (
     <MobileLayout>
-      <div className="p-4 space-y-4">
-        {/* Header Card */}
-        <Card className="bg-gradient-to-r from-blue-500 to-cyan-500 border-0 text-white">
-          <CardContent className="pt-4 pb-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-bold">Drill Hafalan</h2>
-                <p className="text-sm text-white/80">Tahapan drill santri</p>
-              </div>
-              <Target className="w-10 h-10 opacity-50" />
+      {/* Header */}
+      <div className="bg-gradient-to-r from-emerald-400 to-amber-400">
+        <div className="px-4 pt-4 pb-16 flex items-center justify-between">
+          
+          {/* Left */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate(-1)}
+              className="p-2 rounded-full bg-white/20 active:scale-95"
+            >
+              <ArrowLeft className="w-5 h-5 text-white" />
+            </button>
+
+            <div>
+              <h1 className="text-xl font-bold text-white">Drill Hafalan</h1>
+              <p className="text-sm text-white/80">Tahapan drill santri</p>
             </div>
+          </div>
+
+          {/* Right icon */}
+          <Target className="w-8 h-8 text-white/60" />
+        </div>
+      </div>
+
+      {/* CONTENT */}
+      <div className="relative z-10 px-4 -mt-8 space-y-4">
+
+        {/* Card pertama → rounded di SINI */}
+        <Card className="rounded-2xl">
+          <CardContent className="p-4">
+            {/* isi konten lo */}
           </CardContent>
         </Card>
 
