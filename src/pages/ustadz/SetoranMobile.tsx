@@ -87,20 +87,28 @@ export default function SetoranMobile() {
   });
 
   return (
+   return (
     <MobileLayout>
-      <div className="p-4 space-y-4">
-        {/* Header Card */}
-        <Card className="bg-gradient-to-r from-green-500 to-lime-500 border-0 text-white">
-          <CardContent className="pt-4 pb-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-bold">Setoran Hafalan</h2>
-                <p className="text-sm text-white/80">Input setoran santri</p>
-              </div>
-              <BookOpen className="w-10 h-10 opacity-50" />
+      {/* Header */}
+      <div className="relative">
+        {/* Gradient header */}
+        <div className="bg-gradient-to-r from-emerald-400 to-amber-400 pt-4 pb-14">
+          <div className="px-4 flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-bold text-white">Setoran Hafalan</h1>
+              <p className="text-sm text-white/80">Input setoran santri</p>
             </div>
-          </CardContent>
-        </Card>
+
+            <BookOpen className="w-8 h-8 text-white/60" />
+          </div>
+        </div>
+
+        {/* Lengkungan ke bawah */}
+        <div className="absolute -bottom-6 left-0 right-0 h-12 bg-background rounded-t-[50%]" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 px-4 mt-16 space-y-4">
 
         {/* Add Button */}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
