@@ -33,7 +33,7 @@ const penilaianOptions = [
     description: "Ujian tahfidz lengkap 30 juz",
     route: "/ustadz/tahfidz",
     icon: Award,
-    color: "from-amber-400 to-amber-600"
+    color: "from-amber-400 to-amber-500"
   },
 ];
 
