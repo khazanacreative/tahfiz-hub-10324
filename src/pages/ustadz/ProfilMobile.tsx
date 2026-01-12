@@ -78,7 +78,7 @@ export default function ProfilMobile() {
   <MobileLayout>
 
     {/* HEADER */}
-    <div className="bg-gradient-to-br from-emerald-500 to-amber-500">
+    <div className="bg-gradient-to-r from-green-700 to-green-500">
       <div className="px-4 pt-4 pb-16 flex items-center justify-between">
 
         {/* Left */}
@@ -91,13 +91,13 @@ export default function ProfilMobile() {
           </button>
 
           <div>
-            <h1 className="text-xl font-bold text-white">Profil</h1>
-            <p className="text-sm text-white/80">Akun & pengaturan</p>
+            <h1 className="text-xl font-bold text-white">Judul Halaman</h1>
+            <p className="text-sm text-white/80">Deskripsi halaman</p>
           </div>
         </div>
 
         {/* Right icon */}
-        <User className="w-8 h-8 text-white/60" />
+        <Target className="w-8 h-8 text-white/60" />
       </div>
     </div>
 
