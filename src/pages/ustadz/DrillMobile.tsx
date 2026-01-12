@@ -49,6 +49,7 @@ const drillLevels = [
 const BATAS_LULUS = 88;
 
 export default function DrillMobile() {
+  const navigate = useNavigate();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedSantri, setSelectedSantri] = useState("");
   const [tanggalDrill, setTanggalDrill] = useState<Date>();
@@ -99,9 +100,7 @@ export default function DrillMobile() {
     <MobileLayout>
       {/* Header */}
       <div className="bg-gradient-to-r from-emerald-400 to-amber-400">
-        <div className="px-4 pt-4 pb-16 flex items-center justify-between">
-          
-          {/* Left */}
+        <div className="px-4 pt-4 pb-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate(-1)}
@@ -116,13 +115,15 @@ export default function DrillMobile() {
             </div>
           </div>
 
-          {/* Right icon */}
           <Target className="w-8 h-8 text-white/60" />
         </div>
       </div>
 
       {/* CONTENT */}
-      <div className="relative z-10 px-4 -mt-8 space-y-4 rounded-2xl">
+      <div className="relative z-10 px-4 -mt-12 space-y-4">
+
+      <Card className="rounded-2xl shadow-lg">
+      <CardContent className="p-4 space-y-4">
 
         {/* Add Button */}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -139,7 +140,7 @@ export default function DrillMobile() {
                 Tambah Drill
               </DialogTitle>
             </DialogHeader>
-            
+         
             <div className="space-y-4 py-2">
               {/* Santri */}
               <div className="space-y-2">
