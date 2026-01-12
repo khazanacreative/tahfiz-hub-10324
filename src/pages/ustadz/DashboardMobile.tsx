@@ -161,9 +161,15 @@ export default function DashboardMobile() {
             <button
               key={index}
               onClick={() => navigate(item.route)}
-              className="flex flex-col items-center gap-2 p-3 rounded-2xl bg-muted/60 hover:bg-muted active:scale-95 transition"
+              className="
+                flex flex-col items-center gap-2 p-3 rounded-2xl
+                border border-emerald-200
+                bg-transparent
+                hover:bg-emerald-50
+                active:scale-95 transition
+              "
             >
-              <div className="w-14 h-14 rounded-xl border border-emerald-400/70 flex items-center justify-center">
+              <div className="w-14 h-14 rounded-xl bg-white shadow flex items-center justify-center">
                 <item.icon className="w-7 h-7 text-emerald-600" />
               </div>
               <span className="text-xs font-medium text-foreground text-center">
