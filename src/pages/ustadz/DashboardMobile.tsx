@@ -108,7 +108,7 @@ export default function DashboardMobile() {
 
   return (
     <MobileLayout>
-      <div className="min-h-screen bg-white">
+      <div className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-r from-emerald-400 to-lime-400 rounded-b-[32px] z-0" />
         {/* Header */}
         <div className="bg-gradient-to-r from-emerald-400 to-amber-400 px-4 pt-4 pb-6 rounded-b-3xl">
           <div className="flex items-center justify-between">
