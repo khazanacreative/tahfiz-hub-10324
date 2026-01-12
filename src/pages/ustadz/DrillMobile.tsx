@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Target, CalendarIcon, CheckCircle, XCircle } from "lucide-react";
+import { ArrowLeft, Plus, Target, CalendarIcon, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { JuzSelector } from "@/components/JuzSelector";
 import MobileFilters from "@/components/MobileFilters";
