@@ -87,7 +87,6 @@ export default function SetoranMobile() {
   });
 
   return (
-   return (
     <MobileLayout>
       {/* Header */}
       <div className="relative">
@@ -287,7 +286,6 @@ export default function SetoranMobile() {
           ))}
         </div>
       </div>
-     </div>
     </MobileLayout>
   );
 }
