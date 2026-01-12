@@ -63,7 +63,7 @@ export default function PenilaianMobile() {
       </div>
 
         {/* Content */}
-        <div className="-mt-8 bg-background rounded-t-3xl px-4 pt-6 pb-24 min-h-screen">
+        <div className="-mt-8 bg-background rounded-t-3xl px-4 pt-6 pb-12 min-h-screen">
           <h2 className="font-semibold text-foreground mb-4">
             Jenis Penilaian
           </h2>
