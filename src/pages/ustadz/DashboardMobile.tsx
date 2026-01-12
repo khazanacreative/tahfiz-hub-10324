@@ -108,14 +108,24 @@ export default function DashboardMobile() {
 
   return (
     <MobileLayout>
-      <div className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-r from-emerald-400 to-lime-400 rounded-b-[32px] z-0" />
-        {/* Header */}
-        <div className="bg-gradient-to-r from-emerald-400 to-amber-400 px-4 pt-4 pb-6 rounded-b-3xl">
+      <div
+        className="
+          absolute top-0 left-0 right-0
+          h-44
+          bg-gradient-to-b from-emerald-500 via-emerald-400 to-teal-400
+          rounded-b-[32px]
+          z-0
+        "
+      />
+         
+        {/* Header Content */}
+        <div className="px-4 pt-5 pb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <GraduationCap className="w-6 h-6 text-white" />
               <h1 className="text-xl font-bold text-white">Mantaf IMIS</h1>
             </div>
+
             <button className="w-10 h-10 bg-white/30 rounded-full flex items-center justify-center">
               <Bell className="w-5 h-5 text-white" />
             </button>
@@ -123,7 +133,7 @@ export default function DashboardMobile() {
         </div>
 
         {/* Profile Card */}
-        <div className="px-4 pb-4">
+        <div className="px-4 mt-4 pb-4">
           <Card className="bg-white border border-border shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3 pb-3 border-b border-border/50">
