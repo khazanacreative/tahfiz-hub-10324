@@ -140,7 +140,7 @@ export default function TasmiMobile() {
             <DialogTrigger asChild>
               <Button className="w-full h-12 bg-amber-600 hover:bg-amber-700">
                 <Plus className="w-5 h-5 mr-2" />
-                Ujian Baru
+                Tasmi' 1 Juz
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-[95vw] max-h-[85vh] overflow-y-auto rounded-xl">
