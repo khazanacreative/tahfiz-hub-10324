@@ -13,6 +13,8 @@ import DrillMobile from "./pages/ustadz/DrillMobile";
 import TahfidzMobile from "./pages/ustadz/TahfidzMobile";
 import TasmiMobile from "./pages/ustadz/TasmiMobile";
 import ProfilMobile from "./pages/ustadz/ProfilMobile";
+import PenilaianMobile from "./pages/ustadz/PenilaianMobile";
+import ProgressMobile from "./pages/ustadz/ProgressMobile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +38,8 @@ const App = () => (
             <Route path="/ustadz/tahfidz" element={<TahfidzMobile />} />
             <Route path="/ustadz/tasmi" element={<TasmiMobile />} />
             <Route path="/ustadz/profil" element={<ProfilMobile />} />
+            <Route path="/ustadz/penilaian" element={<PenilaianMobile />} />
+            <Route path="/ustadz/progress" element={<ProgressMobile />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
