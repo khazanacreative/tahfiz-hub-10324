@@ -8,7 +8,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, GraduationCap, CheckCircle2, XCircle, ChevronUp, ChevronDown, Info } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Plus, GraduationCap, CheckCircle2, XCircle, ChevronUp, ChevronDown, Info } from "lucide-react";
 import { toast } from "sonner";
 import { JuzSelector } from "@/components/JuzSelector";
 import MobileFilters from "@/components/MobileFilters";
@@ -45,6 +46,7 @@ interface SoalData {
 }
 
 export default function TahfidzMobile() {
+  const navigate = useNavigate();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedSantri, setSelectedSantri] = useState("");
   const [materiDari, setMateriDari] = useState("");
@@ -100,18 +102,31 @@ export default function TahfidzMobile() {
   return (
     <MobileLayout>
       <div className="p-4 space-y-4">
-        {/* Header Card */}
-        <Card className="bg-gradient-to-r from-purple-500 to-pink-500 border-0 text-white">
-          <CardContent className="pt-4 pb-4">
-            <div className="flex items-center justify-between">
+        {/* HEADER */}
+        <div className="bg-gradient-to-r from-purple-500 to-pink-500">
+          <div className="px-4 pt-4 pb-16 flex items-center justify-between">
+            {/* Left */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => navigate(-1)}
+                className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"
+              >
+                <ArrowLeft className="w-5 h-5 text-white" />
+              </button>
+
               <div>
-                <h2 className="text-lg font-bold">Ujian Tahfidz</h2>
+                <h1 className="text-xl font-bold text-white">Ujian Tahfidz</h1>
                 <p className="text-sm text-white/80">10 soal sambung ayat</p>
               </div>
-              <GraduationCap className="w-10 h-10 opacity-50" />
             </div>
-          </CardContent>
-        </Card>
+
+            {/* Right icon */}
+            <GraduationCap className="w-8 h-8 text-white/60" />
+          </div>
+        </div>
+
+        {/* SHEET */}
+        <div className="-mt-12 bg-background rounded-t-3xl px-4 pt-6 pb-24 space-y-4">
 
         {/* Add Button */}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
