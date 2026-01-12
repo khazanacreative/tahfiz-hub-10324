@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import MobileLayout from "@/components/MobileLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -45,6 +46,7 @@ interface PenilaianHalaman {
 }
 
 export default function TasmiMobile() {
+  const navigate = useNavigate(); // ← INI YANG KURANG
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [is5JuzDialogOpen, setIs5JuzDialogOpen] = useState(false);
   const [selectedSantri, setSelectedSantri] = useState("");
@@ -106,25 +108,36 @@ export default function TasmiMobile() {
 
   return (
     <MobileLayout>
-      <div className="p-4 space-y-4">
-        {/* Header Card */}
-          <div className="px-4 pt-4 pb-6">
+      {/* Header */}
+      <div className="relative">
+        {/* Gradient background */}
+        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-r from-emerald-400 to-amber-400 z-0" />
+
+        {/* White curve */}
+        <div className="absolute top-[140px] left-0 right-0 h-12 bg-background rounded-t-3xl z-10" />
+
+        {/* Header content */}
+        <div className="relative z-20 px-4 pt-4 pb-6">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <button 
-                onClick={() => navigate("/ustadz")}
+              <button
+                onClick={() => navigate(-1)}
                 className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"
               >
                 <ArrowLeft className="w-5 h-5 text-white" />
               </button>
-            <div>
-              <h1 className="text-xl font-bold text-white">Ujian Tasmi'</h1>
-                <p className="text-sm text-white/80">Ujian hafalan 1 juz</p>
-            </div>
-            </div>
-              <Award className="w-10 h-10 opacity-50" />
-            </div>
-          </div>
 
+              <div>
+                <h1 className="text-xl font-bold text-white">Ujian Tasmi'</h1>
+                <p className="text-sm text-white/80">Ujian hafalan 1 juz</p>
+              </div>
+            </div>
+            <Award className="w-8 h-8 text-white/60" />
+          </div>
+        </div>
+      </div>
+
+      <div className="px-4 space-y-4">
         {/* Add Buttons */}
         <div className="space-y-2">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
