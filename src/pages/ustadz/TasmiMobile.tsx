@@ -109,12 +109,8 @@ export default function TasmiMobile() {
   return (
     <MobileLayout>
       {/* Header */}
-      <div className="relative">
-        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-r from-emerald-400 to-amber-400 z-0" />
-
-        <div className="absolute top-[140px] left-0 right-0 h-12 bg-background rounded-t-3xl z-10" />
-
-        <div className="relative z-20 px-4 pt-4 pb-6">
+      <div className="bg-gradient-to-r from-emerald-400 to-amber-400 rounded-b-3xl">
+        <div className="px-4 pt-4 pb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button
@@ -129,6 +125,7 @@ export default function TasmiMobile() {
                 <p className="text-sm text-white/80">Ujian hafalan 1 juz</p>
               </div>
             </div>
+
             <Award className="w-8 h-8 text-white/60" />
           </div>
         </div>

@@ -50,8 +50,9 @@ export default function PenilaianMobile() {
 
   return (
     <MobileLayout>
-      <div className="min-h-screen bg-gradient-to-r from-emerald-400 to-amber-400">
-        {/* Header */}
+      <div className="min-h-screen bg-background">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-emerald-400 to-amber-400 rounded-b-3xl">
         <div className="px-4 pt-4 pb-6">
           <div className="flex items-center gap-3">
             <button 
@@ -66,6 +67,7 @@ export default function PenilaianMobile() {
             </div>
           </div>
         </div>
+      </div>
 
         {/* Content */}
         <div className="bg-background rounded-t-3xl min-h-[calc(100vh-120px)] px-4 pt-6 pb-24">
