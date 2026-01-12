@@ -7,7 +7,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 import { 
+  ArrowLeft, 
   User, 
   LogOut, 
   BookOpen,
@@ -72,9 +74,36 @@ export default function ProfilMobile() {
     }
   };
 
-  return (
-    <MobileLayout>
-      <div className="p-4 space-y-4">
+  rreturn (
+  <MobileLayout>
+
+    {/* HEADER */}
+    <div className="bg-gradient-to-br from-green-500 to-lime-500">
+      <div className="px-4 pt-4 pb-16 flex items-center justify-between">
+
+        {/* Left */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate(-1)}
+            className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"
+          >
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </button>
+
+          <div>
+            <h1 className="text-xl font-bold text-white">Profil</h1>
+            <p className="text-sm text-white/80">Akun & pengaturan</p>
+          </div>
+        </div>
+
+        {/* Right icon */}
+        <User className="w-8 h-8 text-white/60" />
+      </div>
+    </div>
+
+    {/* SHEET */}
+    <div className="-mt-12 bg-background rounded-t-3xl px-4 pt-6 pb-24 space-y-4">
+      
         {/* Profile Card */}
         <Card className="bg-gradient-to-br from-green-500 to-lime-500 border-0 text-white">
           <CardContent className="pt-6 pb-6">
