@@ -99,6 +99,7 @@ export default function DrillMobile() {
   return (
     <MobileLayout>
     {/* HEADER */}
+    <div className="bg-gradient-to-r from-emerald-400 to-amber-400">
     <div className="px-4 pt-4 pb-16 flex items-center justify-between">
       {/* Left section */}
       <div className="flex items-center gap-3">
