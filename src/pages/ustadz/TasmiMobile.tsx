@@ -110,13 +110,10 @@ export default function TasmiMobile() {
     <MobileLayout>
       {/* Header */}
       <div className="relative">
-        {/* Gradient background */}
         <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-r from-emerald-400 to-amber-400 z-0" />
 
-        {/* White curve */}
         <div className="absolute top-[140px] left-0 right-0 h-12 bg-background rounded-t-3xl z-10" />
 
-        {/* Header content */}
         <div className="relative z-20 px-4 pt-4 pb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -137,7 +134,7 @@ export default function TasmiMobile() {
         </div>
       </div>
 
-      <div className="px-4 space-y-4">
+      <div className="relative z-20 px-4 mt-16 space-y-4">
         {/* Add Buttons */}
         <div className="space-y-2">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
