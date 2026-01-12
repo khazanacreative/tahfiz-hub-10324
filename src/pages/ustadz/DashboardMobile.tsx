@@ -110,17 +110,12 @@ export default function DashboardMobile() {
     <MobileLayout>
       <div className="min-h-screen bg-white">
         {/* Header */}
-        <div className="
-          bg-gradient-to-r from-emerald-400 to-lime-400
-          px-4 pt-5 pb-16
-          rounded-b-[32px]
-        ">
+        <div className="bg-gradient-to-r from-emerald-400 to-amber-400 px-4 pt-4 pb-6 rounded-b-3xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <GraduationCap className="w-6 h-6 text-white" />
               <h1 className="text-xl font-bold text-white">Mantaf IMIS</h1>
             </div>
-
             <button className="w-10 h-10 bg-white/30 rounded-full flex items-center justify-center">
               <Bell className="w-5 h-5 text-white" />
             </button>
@@ -128,7 +123,7 @@ export default function DashboardMobile() {
         </div>
 
         {/* Profile Card */}
-        <div className="px-4 -mt-10 pt-2 pb-4">
+        <div className="px-4 pb-4">
           <Card className="bg-white border border-border shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3 pb-3 border-b border-border/50">
@@ -162,40 +157,35 @@ export default function DashboardMobile() {
 
         {/* Menu Icons Grid */}
         <div className="px-4 pb-4">
-          <div className="grid grid-cols-4 gap-4">
-            {menuItems.map((item, index) => (
-              <button
-                key={index}
-                onClick={() => navigate(item.route)}
-                className="
-                  w-full
-                  flex flex-col items-center
-                  gap-1.5
-                  px-2 py-3
-                  rounded-xl
-                  border border-emerald-300
-                  bg-transparent
-                  hover:bg-emerald-50
-                  active:scale-95
-                  transition
-                "
-              >
-                <div className="
-                  w-12 h-12
-                  rounded-lg
-                  bg-gradient-to-br from-emerald-500 to-lime-400
-                  flex items-center justify-center
-                  shadow-sm
-                ">
-                  <item.icon className="w-6 h-6 text-white" />
-                </div>
-
-                <span className="text-[11px] font-medium text-foreground text-center leading-tight">
-                  {item.label}
-                </span>
-              </button>
-            ))}
-          </div>
+          {menuItems.map((item, index) => (
+            <button
+              key={index}
+              onClick={() => navigate(item.route)}
+              className="
+                flex flex-col items-center gap-1.5
+                px-2 py-3
+                rounded-xl
+                border border-emerald-300
+                bg-transparent
+                hover:bg-emerald-50
+                active:scale-95
+                transition
+              "
+            >
+              <div className="
+                w-12 h-12
+                rounded-lg
+                bg-gradient-to-br from-emerald-500 to-lime-400
+                flex items-center justify-center
+                shadow-sm
+              ">
+                <item.icon className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-[11px] font-medium text-foreground text-center leading-tight">
+                {item.label}
+              </span>
+            </button>
+          ))}
         </div>
 
         {/* Reminder Card */}
