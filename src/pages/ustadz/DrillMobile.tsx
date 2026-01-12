@@ -122,14 +122,7 @@ export default function DrillMobile() {
       </div>
 
       {/* CONTENT */}
-      <div className="relative z-10 px-4 -mt-8 space-y-4">
-
-        {/* Card pertama → rounded di SINI */}
-        <Card className="rounded-2xl">
-          <CardContent className="p-4">
-            {/* isi konten lo */}
-          </CardContent>
-        </Card>
+      <div className="relative z-10 px-4 -mt-8 space-y-4 rounded-2xl">
 
         {/* Add Button */}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
