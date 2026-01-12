@@ -74,7 +74,7 @@ export default function ProfilMobile() {
     }
   };
 
-  rreturn (
+  return (
   <MobileLayout>
 
     {/* HEADER */}
