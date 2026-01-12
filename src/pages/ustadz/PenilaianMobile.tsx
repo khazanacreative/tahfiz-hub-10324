@@ -20,17 +20,9 @@ const penilaianOptions = [
     color: "from-emerald-400 to-emerald-600"
   },
   { 
-    id: "tasmi1", 
-    label: "Tasmi' 1 Juz", 
-    description: "Ujian tasmi' per 1 juz hafalan",
-    route: "/ustadz/tasmi",
-    icon: BookOpen,
-    color: "from-teal-400 to-teal-600"
-  },
-  { 
     id: "tasmi5", 
-    label: "Tasmi' 5 Juz", 
-    description: "Ujian tasmi' per 5 juz hafalan",
+    label: "Ujian Tasmi'", 
+    description: "Ujian tasmi' per 1 juz & 5 juz",
     route: "/ustadz/tasmi",
     icon: GraduationCap,
     color: "from-cyan-400 to-cyan-600"
