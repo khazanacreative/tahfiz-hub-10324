@@ -98,32 +98,25 @@ export default function DrillMobile() {
 
   return (
     <MobileLayout>
-      {/* Header */}
-      <div className="bg-gradient-to-r from-emerald-400 to-amber-400">
-        <div className="px-4 pt-4 pb-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate(-1)}
-              className="p-2 rounded-full bg-white/20 active:scale-95"
-            >
-              <ArrowLeft className="w-5 h-5 text-white" />
-            </button>
+    {/* HEADER */}
+    <div className="bg-gradient-to-r from-emerald-400 to-amber-400 pt-4 pb-20 rounded-b-3xl">
+      <div className="px-4 flex items-center gap-3">
+        <button
+          onClick={() => navigate(-1)}
+          className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"
+        >
+          <ArrowLeft className="w-5 h-5 text-white" />
+        </button>
 
-            <div>
-              <h1 className="text-xl font-bold text-white">Drill Hafalan</h1>
-              <p className="text-sm text-white/80">Tahapan drill santri</p>
-            </div>
-          </div>
-
-          <Target className="w-8 h-8 text-white/60" />
+        <div>
+          <h1 className="text-xl font-bold text-white">Drill Hafalan</h1>
+          <p className="text-sm text-white/80">Tahapan drill santri</p>
         </div>
       </div>
+    </div>
 
-      {/* CONTENT */}
-      <div className="relative z-10 px-4 -mt-12 space-y-4">
-
-      <Card className="rounded-2xl shadow-lg">
-      <CardContent className="p-4 space-y-4">
+    {/* SHEET */}
+    <div className="-mt-12 bg-background rounded-t-3xl px-4 pt-6 pb-24 space-y-4">
 
         {/* Add Button */}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
