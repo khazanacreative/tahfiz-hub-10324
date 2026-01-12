@@ -63,11 +63,14 @@ export default function PenilaianMobile() {
       </div>
 
         {/* Content */}
-        <div className="-mt-8 bg-background rounded-t-3xl px-4 pt-6 pb-24 min-h-screen">
+        <div className="-mt-8 bg-background rounded-t-3xl px-4 pt-6 pb-10 min-h-screen">
+
+          {/* Jenis Penilaian */}
           <h2 className="font-semibold text-foreground mb-4">
             Jenis Penilaian
           </h2>
 
+          <div className="space-y-3">
             {penilaianOptions.map((option) => (
               <Card
                 key={option.id}
@@ -90,20 +93,28 @@ export default function PenilaianMobile() {
             ))}
           </div>
 
-          {/* Quick Stats */}
-          <div className="mt-6">
-            <h2 className="font-semibold text-foreground mb-4">Statistik Penilaian</h2>
+          {/* Statistik Penilaian */}
+          <div className="mt-8">
+            <h2 className="font-semibold text-foreground mb-4">
+              Statistik Penilaian
+            </h2>
+
             <div className="grid grid-cols-2 gap-3">
               <Card className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200">
                 <CardContent className="p-4 text-center">
                   <p className="text-2xl font-bold text-emerald-700">24</p>
-                  <p className="text-xs text-emerald-600 mt-1">Penilaian Minggu Ini</p>
+                  <p className="text-xs text-emerald-600 mt-1">
+                    Penilaian Minggu Ini
+                  </p>
                 </CardContent>
               </Card>
+
               <Card className="bg-gradient-to-br from-amber-50 to-yellow-50 border-amber-200">
                 <CardContent className="p-4 text-center">
                   <p className="text-2xl font-bold text-amber-700">8</p>
-                  <p className="text-xs text-amber-600 mt-1">Menunggu Penilaian</p>
+                  <p className="text-xs text-amber-600 mt-1">
+                    Menunggu Penilaian
+                  </p>
                 </CardContent>
               </Card>
             </div>
