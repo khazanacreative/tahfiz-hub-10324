@@ -30,7 +30,7 @@ const dummySantriProgress =
   };
 
   return (
-    <MobileLayout>
+   <MobileLayout>
       {/* HEADER */}
       <div className="bg-gradient-to-r from-emerald-400 to-amber-400 pt-4 pb-20 rounded-b-3xl">
         <div className="px-4 flex items-center gap-3">
@@ -42,26 +42,22 @@ const dummySantriProgress =
           </button>
 
           <div>
-            <h1 className="text-xl font-bold text-white">Progress Hafalan</h1>
-            <p className="text-sm text-white/80">Pantauan capaian santri</p>
+            <h1 className="text-xl font-bold text-white">Drill Hafalan</h1>
+            <p className="text-sm text-white/80">Tahapan drill santri</p>
           </div>
         </div>
       </div>
 
       {/* SHEET */}
       <div className="-mt-12 bg-background rounded-t-3xl px-4 pt-6 pb-24 space-y-4">
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Cari santri..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
-          />
-        </div>
+    
+      {/* Add Button */}
+      <Button className="w-full h-12 bg-blue-600 hover:bg-blue-700">
+        <Plus className="w-5 h-5 mr-2" />
+        Tambah Drill
+      </Button>
 
-        {/* Stats */}
+      {/* Stats */}
         <div className="grid grid-cols-2 gap-3">
           <Card className="bg-gradient-to-br from-blue-500/10 to-cyan-500/5 border-blue-200">
             <CardContent className="p-4 flex items-center gap-3">
