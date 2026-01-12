@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { Plus, BookOpen, CalendarIcon, CheckCircle, XCircle } from "lucide-react";
+import { ArrowLeft, Plus, BookOpen, CalendarIcon, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { JuzSelector } from "@/components/JuzSelector";
 import MobileFilters from "@/components/MobileFilters";
@@ -39,6 +39,7 @@ const mockSetoran = [
 const BATAS_LANCAR = 80;
 
 export default function SetoranMobile() {
+  const navigate = useNavigate();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedSantri, setSelectedSantri] = useState("");
   const [tanggalSetoran, setTanggalSetoran] = useState<Date>();
@@ -88,16 +89,29 @@ export default function SetoranMobile() {
 
   return (
     <MobileLayout>
-      {/* Header */}
-        <div className="bg-gradient-to-r from-emerald-400 to-amber-400">
-          <div className="px-4 pt-4 pb-16 flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-white">Setoran Hafalan</h1>
-              <p className="text-sm text-white/80">Input setoran santri</p>
-            </div>
-            <BookOpen className="w-8 h-8 text-white/60" />
+    {/* Header */}
+    <div className="bg-gradient-to-r from-emerald-400 to-amber-400">
+      <div className="px-4 pt-4 pb-16 flex items-center justify-between">
+        
+        {/* Left */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => navigate(-1)}
+            className="p-2 rounded-full bg-white/20 active:scale-95"
+          >
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </button>
+
+          <div>
+            <h1 className="text-xl font-bold text-white">Setoran Hafalan</h1>
+            <p className="text-sm text-white/80">Input setoran santri</p>
           </div>
         </div>
+
+        {/* Right icon */}
+        <BookOpen className="w-8 h-8 text-white/60" />
+      </div>
+    </div>
 
       {/* Content */}
       <div className="-mt-10 bg-background rounded-t-3xl px-4 pt-6 space-y-4">
