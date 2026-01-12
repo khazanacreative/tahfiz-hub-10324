@@ -5,8 +5,6 @@ import { cn } from "@/lib/utils";
 
 interface MobileLayoutProps {
   children: ReactNode;
-  title?: string;
-  showHeader?: boolean;
 }
 
 const navItems = [
@@ -17,11 +15,10 @@ const navItems = [
   { path: "/ustadz/profil", label: "Profil", icon: User },
 ];
 
-export default function MobileLayout({ children, title, showHeader = true }: MobileLayoutProps) {
+export default function MobileLayout({ children }: MobileLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Check if current path starts with nav item path for active state
   const isNavActive = (path: string) => {
     if (path === "/ustadz") {
       return location.pathname === "/ustadz";
@@ -31,15 +28,8 @@ export default function MobileLayout({ children, title, showHeader = true }: Mob
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      {showHeader && title && (
-        <header className="sticky top-0 z-40 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground px-4 py-3 shadow-md">
-          <h1 className="text-lg font-semibold text-center">{title}</h1>
-        </header>
-      )}
-
       {/* Main Content */}
-      <main className="flex-1 overflow-auto pb-20">
+      <main className="flex-1 pb-24">
         {children}
       </main>
 
@@ -48,7 +38,7 @@ export default function MobileLayout({ children, title, showHeader = true }: Mob
         <div className="flex justify-around items-center h-16 max-w-md mx-auto px-2">
           {navItems.map((item, index) => {
             const isActive = isNavActive(item.path);
-            const isCenter = index === 2; // Penilaian is center
+            const isCenter = index === 2;
 
             if (isCenter) {
               return (
@@ -57,18 +47,24 @@ export default function MobileLayout({ children, title, showHeader = true }: Mob
                   onClick={() => navigate(item.path)}
                   className="flex flex-col items-center justify-center -mt-6"
                 >
-                  <div className={cn(
-                    "w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all",
-                    isActive 
-                      ? "bg-gradient-to-br from-emerald-500 to-teal-500" 
-                      : "bg-gradient-to-br from-emerald-400 to-teal-400"
-                  )}>
+                  <div
+                    className={cn(
+                      "w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all",
+                      isActive
+                        ? "bg-gradient-to-br from-emerald-500 to-teal-500"
+                        : "bg-gradient-to-br from-emerald-400 to-teal-400"
+                    )}
+                  >
                     <item.icon className="h-6 w-6 text-white" />
                   </div>
-                  <span className={cn(
-                    "text-[10px] mt-1 font-medium",
-                    isActive ? "text-primary" : "text-muted-foreground"
-                  )}>{item.label}</span>
+                  <span
+                    className={cn(
+                      "text-[10px] mt-1 font-medium",
+                      isActive ? "text-primary" : "text-muted-foreground"
+                    )}
+                  >
+                    {item.label}
+                  </span>
                 </button>
               );
             }
@@ -78,20 +74,16 @@ export default function MobileLayout({ children, title, showHeader = true }: Mob
                 key={item.path}
                 onClick={() => navigate(item.path)}
                 className={cn(
-                  "flex flex-col items-center justify-center flex-1 h-full transition-all duration-200",
+                  "flex flex-col items-center justify-center flex-1 h-full transition-all",
                   isActive
                     ? "text-primary"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
-                <item.icon className={cn(
-                  "h-5 w-5 transition-all",
-                  isActive && "text-primary"
-                )} />
-                <span className={cn(
-                  "text-[10px] mt-1 font-medium",
-                  isActive ? "text-primary" : "text-muted-foreground"
-                )}>{item.label}</span>
+                <item.icon className="h-5 w-5" />
+                <span className="text-[10px] mt-1 font-medium">
+                  {item.label}
+                </span>
               </button>
             );
           })}
