@@ -33,7 +33,7 @@ const penilaianOptions = [
     description: "Ujian tahfidz lengkap 30 juz",
     route: "/ustadz/tahfidz",
     icon: Award,
-    color: "from-amber-400 to-amber-500"
+    color: "from-amber-400 to-amber-600"
   },
 ];
 
@@ -64,14 +64,12 @@ export default function PenilaianMobile() {
 
         {/* Content */}
         <div className="-mt-8 bg-background rounded-t-3xl px-4 pt-6 pb-24 min-h-screen">
-
           <h2 className="font-semibold text-foreground mb-4">
             Jenis Penilaian
           </h2>
-
-          <div className="space-y-3">
+            
             {penilaianOptions.map((option) => (
-              <Card
+              <Card 
                 key={option.id}
                 className="border border-border/50 shadow-sm cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
                 onClick={() => navigate(option.route)}
@@ -92,12 +90,9 @@ export default function PenilaianMobile() {
             ))}
           </div>
 
-          {/* Statistik Penilaian */}
-          <div className="mt-6">
-            <h2 className="font-semibold text-foreground mb-4">
-              Statistik Penilaian
-            </h2>
-
+          {/* Quick Stats */}
+          <div className="mt-8">
+            <h2 className="font-semibold text-foreground mb-4">Statistik Penilaian</h2>
             <div className="grid grid-cols-2 gap-3">
               <Card className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200">
                 <CardContent className="p-4 text-center">
@@ -105,7 +100,6 @@ export default function PenilaianMobile() {
                   <p className="text-xs text-emerald-600 mt-1">Penilaian Minggu Ini</p>
                 </CardContent>
               </Card>
-
               <Card className="bg-gradient-to-br from-amber-50 to-yellow-50 border-amber-200">
                 <CardContent className="p-4 text-center">
                   <p className="text-2xl font-bold text-amber-700">8</p>
