@@ -100,7 +100,9 @@ export default function DrillMobile() {
     <MobileLayout>
     {/* HEADER */}
     <div className="bg-gradient-to-r from-emerald-400 to-amber-400 pt-4 pb-20 rounded-b-3xl">
-      <div className="px-4 flex items-center gap-3">
+      <div className="px-4 pt-4 pb-14">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
         <button
           onClick={() => navigate(-1)}
           className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"
@@ -115,6 +117,8 @@ export default function DrillMobile() {
 
         {/* Right icon */}
         <Target className="w-8 h-8 text-white/60" />
+      </div>
+      </div>
       </div>
     </div>
 
