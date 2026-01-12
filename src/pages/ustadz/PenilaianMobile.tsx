@@ -67,9 +67,9 @@ export default function PenilaianMobile() {
           <h2 className="font-semibold text-foreground mb-4">
             Jenis Penilaian
           </h2>
-            
+
             {penilaianOptions.map((option) => (
-              <Card 
+              <Card
                 key={option.id}
                 className="border border-border/50 shadow-sm cursor-pointer hover:shadow-md transition-all active:scale-[0.98]"
                 onClick={() => navigate(option.route)}
@@ -91,7 +91,7 @@ export default function PenilaianMobile() {
           </div>
 
           {/* Quick Stats */}
-          <div className="mt-8">
+          <div className="mt-6">
             <h2 className="font-semibold text-foreground mb-4">Statistik Penilaian</h2>
             <div className="grid grid-cols-2 gap-3">
               <Card className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200">
