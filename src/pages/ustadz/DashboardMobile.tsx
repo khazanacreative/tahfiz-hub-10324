@@ -156,23 +156,32 @@ export default function DashboardMobile() {
         </div>
 
         {/* Menu Icons Grid */}
-        <div className="grid grid-cols-4 gap-4">
+        <div className="px-4 pb-4">
           {menuItems.map((item, index) => (
             <button
               key={index}
               onClick={() => navigate(item.route)}
               className="
-                flex flex-col items-center gap-2 p-3 rounded-2xl
-                border border-emerald-200
+                flex flex-col items-center gap-1.5
+                px-2 py-3
+                rounded-xl
+                border border-emerald-300
                 bg-transparent
                 hover:bg-emerald-50
-                active:scale-95 transition
+                active:scale-95
+                transition
               "
             >
-              <div className="w-14 h-14 rounded-xl bg-white shadow flex items-center justify-center">
-                <item.icon className="w-7 h-7 text-emerald-600" />
+              <div className="
+                w-12 h-12
+                rounded-lg
+                bg-gradient-to-br from-emerald-500 to-lime-400
+                flex items-center justify-center
+                shadow-sm
+              ">
+                <item.icon className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xs font-medium text-foreground text-center">
+              <span className="text-[11px] font-medium text-foreground text-center leading-tight">
                 {item.label}
               </span>
             </button>
