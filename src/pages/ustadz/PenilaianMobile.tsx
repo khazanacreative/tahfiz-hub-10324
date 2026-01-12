@@ -71,9 +71,10 @@ export default function PenilaianMobile() {
       </div>
 
         {/* Content */}
-        <div className="bg-background rounded-t-3xl min-h-[calc(100vh-120px)] px-4 pt-6 pb-24">
-          <div className="space-y-4">
-            <h2 className="font-semibold text-foreground">Jenis Penilaian</h2>
+        <div className="-mt-8 bg-background rounded-t-3xl px-4 pt-6 pb-24 min-h-screen">
+          <h2 className="font-semibold text-foreground mb-4">
+            Jenis Penilaian
+          </h2>
             
             {penilaianOptions.map((option) => (
               <Card 
@@ -116,7 +117,6 @@ export default function PenilaianMobile() {
             </div>
           </div>
         </div>
-      </div>
     </MobileLayout>
   );
 }
