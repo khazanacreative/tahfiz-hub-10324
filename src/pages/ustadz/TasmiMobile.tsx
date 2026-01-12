@@ -109,9 +109,10 @@ export default function TasmiMobile() {
   return (
     <MobileLayout>
       {/* Header */}
-      <div className="bg-gradient-to-r from-emerald-400 to-amber-400 rounded-b-3xl">
-        <div className="px-4 pt-4 pb-6">
-          <div className="flex items-center justify-between">
+      <div className="relative">
+        {/* Gradient */}
+        <div className="bg-gradient-to-r from-emerald-400 to-amber-400 pt-4 pb-14">
+          <div className="px-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button
                 onClick={() => navigate(-1)}
@@ -129,6 +130,9 @@ export default function TasmiMobile() {
             <Award className="w-8 h-8 text-white/60" />
           </div>
         </div>
+
+        {/* Curve ke bawah */}
+        <div className="absolute -bottom-6 left-0 right-0 h-12 bg-background rounded-t-[50%]" />
       </div>
 
       <div className="relative z-20 px-4 mt-16 space-y-4">
