@@ -119,6 +119,7 @@ export default function DrillMobile() {
       {/* Right icon */}
       <Target className="w-8 h-8 text-white/60" />
     </div>
+    </div>
 
     {/* SHEET */}
     <div className="-mt-12 bg-background rounded-t-3xl px-4 pt-6 pb-24 space-y-4">
