@@ -11,9 +11,9 @@ import {
 import { Plus, Pencil, Trash2 } from "lucide-react";
 
 const mockHalaqoh = [
-  { id: "1", nama: "Halaqoh Al-Azhary", ustadz: "Ustadz Ahmad Fauzi", tingkat: "Pemula", jumlahSantri: 2 },
-  { id: "2", nama: "Halaqoh Al-Furqon", ustadz: "Ustadz Budi Santoso", tingkat: "Menengah", jumlahSantri: 2 },
-  { id: "3", nama: "Halaqoh Al-Hidayah", ustadz: "Ustadz Muhammad Yusuf", tingkat: "Lanjutan", jumlahSantri: 2 },
+  { id: "1", nama: "Halaqoh Al-Azhary", ustadz: "Ustadz Ahmad Fauzi", tingkat: "Paket A", jumlahSantri: 2 },
+  { id: "2", nama: "Halaqoh Al-Furqon", ustadz: "Ustadz Budi Santoso", tingkat: "Paket B", jumlahSantri: 2 },
+  { id: "3", nama: "Halaqoh Al-Hidayah", ustadz: "Ustadz Muhammad Yusuf", tingkat: "Paket C", jumlahSantri: 2 },
 ];
 
 export default function DataHalaqoh() {
