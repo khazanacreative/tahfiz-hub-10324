@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MobileLayout from "@/components/MobileLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,54 +11,86 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { supabase } from "@/integrations/supabase/client";
 import { 
   ArrowLeft, 
   BookMarked,
   Search,
   Users,
-  GraduationCap
+  User,
+  Clock
 } from "lucide-react";
 
-interface Halaqoh {
+interface HalaqohData {
   id: string;
   nama_halaqoh: string;
-  tingkat: string | null;
-  jumlah_santri: number | null;
-  id_asatidz: string | null;
+  tingkat: string;
+  jumlah_santri: number;
+  jadwal: string;
+  santriList: { id: string; nama: string; progress: number }[];
 }
+
+// Dummy data - halaqoh yang menjadi tanggung jawab ustadz
+const myHalaqohData: HalaqohData[] = [
+  {
+    id: "1",
+    nama_halaqoh: "Halaqoh Al-Fatih",
+    tingkat: "Dasar",
+    jumlah_santri: 12,
+    jadwal: "Senin, Rabu, Jumat - 08:00",
+    santriList: [
+      { id: "s1", nama: "Ahmad Rizki", progress: 45 },
+      { id: "s2", nama: "Muhammad Fauzi", progress: 60 },
+      { id: "s3", nama: "Abdullah Hakim", progress: 35 },
+      { id: "s4", nama: "Yusuf Ibrahim", progress: 75 },
+      { id: "s5", nama: "Hasan Basri", progress: 50 },
+    ]
+  },
+  {
+    id: "2",
+    nama_halaqoh: "Halaqoh An-Nur",
+    tingkat: "Menengah",
+    jumlah_santri: 10,
+    jadwal: "Selasa, Kamis, Sabtu - 09:00",
+    santriList: [
+      { id: "s6", nama: "Umar Faruq", progress: 80 },
+      { id: "s7", nama: "Ali Mukhtar", progress: 65 },
+      { id: "s8", nama: "Bilal Ahmad", progress: 55 },
+    ]
+  },
+  {
+    id: "3",
+    nama_halaqoh: "Halaqoh Al-Ikhlas",
+    tingkat: "Lanjutan",
+    jumlah_santri: 8,
+    jadwal: "Senin - Jumat - 07:00",
+    santriList: [
+      { id: "s9", nama: "Khalid Walid", progress: 90 },
+      { id: "s10", nama: "Hamza Yusuf", progress: 85 },
+    ]
+  }
+];
 
 export default function DataHalaqohMobile() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterTingkat, setFilterTingkat] = useState("all");
-  const [halaqohList, setHalaqohList] = useState<Halaqoh[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [expandedHalaqoh, setExpandedHalaqoh] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data, error } = await supabase.from("halaqoh").select("*");
-        if (data) setHalaqohList(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const tingkatOptions = [...new Set(myHalaqohData.map(h => h.tingkat))];
 
-    fetchData();
-  }, []);
-
-  const tingkatOptions = [...new Set(halaqohList.map(h => h.tingkat).filter(Boolean))];
-
-  const filteredHalaqoh = halaqohList.filter(halaqoh => {
+  const filteredHalaqoh = myHalaqohData.filter(halaqoh => {
     const matchSearch = halaqoh.nama_halaqoh.toLowerCase().includes(searchQuery.toLowerCase());
     const matchTingkat = filterTingkat === "all" || halaqoh.tingkat === filterTingkat;
     return matchSearch && matchTingkat;
   });
 
-  const totalSantri = halaqohList.reduce((sum, h) => sum + (h.jumlah_santri || 0), 0);
+  const totalSantri = myHalaqohData.reduce((sum, h) => sum + h.jumlah_santri, 0);
+
+  const getProgressColor = (progress: number) => {
+    if (progress >= 75) return "text-emerald-600";
+    if (progress >= 50) return "text-amber-600";
+    return "text-red-500";
+  };
 
   return (
     <MobileLayout>
@@ -75,8 +107,8 @@ export default function DataHalaqohMobile() {
               </button>
 
               <div className="flex-1">
-                <h1 className="text-xl font-bold text-white">Data Halaqoh</h1>
-                <p className="text-sm text-white/80">Kelola kelompok belajar</p>
+                <h1 className="text-xl font-bold text-white">Halaqoh Saya</h1>
+                <p className="text-sm text-white/80">Kelompok dalam tanggung jawab Anda</p>
               </div>
 
               <BookMarked className="w-8 h-8 text-white/60" />
@@ -106,7 +138,7 @@ export default function DataHalaqohMobile() {
               <SelectContent>
                 <SelectItem value="all">Semua Tingkat</SelectItem>
                 {tingkatOptions.map((tingkat) => (
-                  <SelectItem key={tingkat} value={tingkat!}>{tingkat}</SelectItem>
+                  <SelectItem key={tingkat} value={tingkat}>{tingkat}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -116,8 +148,8 @@ export default function DataHalaqohMobile() {
           <div className="grid grid-cols-2 gap-3 mb-4">
             <Card className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-emerald-700">{halaqohList.length}</p>
-                <p className="text-xs text-emerald-600">Total Halaqoh</p>
+                <p className="text-2xl font-bold text-emerald-700">{myHalaqohData.length}</p>
+                <p className="text-xs text-emerald-600">Halaqoh Saya</p>
               </CardContent>
             </Card>
             <Card className="bg-gradient-to-br from-amber-50 to-yellow-50 border-amber-200">
@@ -133,39 +165,68 @@ export default function DataHalaqohMobile() {
             Daftar Halaqoh ({filteredHalaqoh.length})
           </h2>
 
-          {loading ? (
-            <div className="text-center py-8 text-muted-foreground">Loading...</div>
-          ) : filteredHalaqoh.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              Tidak ada data halaqoh
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {filteredHalaqoh.map((halaqoh) => (
-                <Card key={halaqoh.id} className="border border-border/50">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-blue-400 flex items-center justify-center">
-                        <BookMarked className="w-6 h-6 text-white" />
+          <div className="space-y-3">
+            {filteredHalaqoh.map((halaqoh) => (
+              <Card 
+                key={halaqoh.id} 
+                className="border border-border/50 overflow-hidden"
+              >
+                <CardContent 
+                  className="p-4 cursor-pointer"
+                  onClick={() => setExpandedHalaqoh(
+                    expandedHalaqoh === halaqoh.id ? null : halaqoh.id
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-blue-400 flex items-center justify-center">
+                      <BookMarked className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-foreground">{halaqoh.nama_halaqoh}</h3>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Users className="w-3 h-3 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">
+                          {halaqoh.jumlah_santri} santri
+                        </span>
                       </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-foreground">{halaqoh.nama_halaqoh}</h3>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Users className="w-3 h-3 text-muted-foreground" />
-                          <span className="text-sm text-muted-foreground">
-                            {halaqoh.jumlah_santri || 0} santri
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <Clock className="w-3 h-3 text-muted-foreground" />
+                        <span className="text-xs text-muted-foreground">
+                          {halaqoh.jadwal}
+                        </span>
+                      </div>
+                    </div>
+                    <Badge variant="outline">{halaqoh.tingkat}</Badge>
+                  </div>
+                </CardContent>
+                
+                {/* Expanded santri list */}
+                {expandedHalaqoh === halaqoh.id && (
+                  <div className="border-t bg-muted/30 px-4 py-3">
+                    <p className="text-xs font-medium text-muted-foreground mb-2">
+                      Santri dalam halaqoh ini:
+                    </p>
+                    <div className="space-y-2">
+                      {halaqoh.santriList.map((santri) => (
+                        <div 
+                          key={santri.id}
+                          className="flex items-center gap-2 bg-background rounded-lg p-2"
+                        >
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-300 to-teal-300 flex items-center justify-center">
+                            <User className="w-4 h-4 text-white" />
+                          </div>
+                          <span className="flex-1 text-sm font-medium">{santri.nama}</span>
+                          <span className={`text-sm font-semibold ${getProgressColor(santri.progress)}`}>
+                            {santri.progress}%
                           </span>
                         </div>
-                      </div>
-                      {halaqoh.tingkat && (
-                        <Badge variant="outline">{halaqoh.tingkat}</Badge>
-                      )}
+                      ))}
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+                  </div>
+                )}
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     </MobileLayout>
