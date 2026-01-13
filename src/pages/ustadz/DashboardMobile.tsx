@@ -88,7 +88,7 @@ export default function DashboardMobile() {
   { icon: GraduationCap, label: "Tasmi'", route: "/ustadz/tasmi" },
   { icon: Award, label: "Ujian Tahfidz", route: "/ustadz/tahfidz" },
   { icon: UsersRound, label: "Data Siswa", route: "/ustadz/data-siswa" },
-  { icon: Users, label: "Halaqoh", route: "/ustadz/halaqoh" },
+  { icon: Users, label: "Halaqoh", route: "/ustadz/data-halaqoh" },
   { icon: FileText, label: "Laporan", route: "/ustadz/laporan" },
   { icon: BarChart3, label: "Rapor", route: "/ustadz/rapor" },
 ];
