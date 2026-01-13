@@ -15,6 +15,10 @@ import TasmiMobile from "./pages/ustadz/TasmiMobile";
 import ProfilMobile from "./pages/ustadz/ProfilMobile";
 import PenilaianMobile from "./pages/ustadz/PenilaianMobile";
 import ProgressMobile from "./pages/ustadz/ProgressMobile";
+import DataSiswaMobile from "./pages/ustadz/DataSiswaMobile";
+import DataHalaqohMobile from "./pages/ustadz/DataHalaqohMobile";
+import LaporanMobile from "./pages/ustadz/LaporanMobile";
+import RaporMobile from "./pages/ustadz/RaporMobile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +44,10 @@ const App = () => (
             <Route path="/ustadz/profil" element={<ProfilMobile />} />
             <Route path="/ustadz/penilaian" element={<PenilaianMobile />} />
             <Route path="/ustadz/progress" element={<ProgressMobile />} />
+            <Route path="/ustadz/data-siswa" element={<DataSiswaMobile />} />
+            <Route path="/ustadz/data-halaqoh" element={<DataHalaqohMobile />} />
+            <Route path="/ustadz/laporan" element={<LaporanMobile />} />
+            <Route path="/ustadz/rapor" element={<RaporMobile />} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
