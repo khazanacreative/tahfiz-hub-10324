@@ -34,7 +34,7 @@ const myHalaqohData: HalaqohData[] = [
   {
     id: "1",
     nama_halaqoh: "Halaqoh Al-Fatih",
-    tingkat: "Dasar",
+    tingkat: "Paket A",
     jumlah_santri: 12,
     jadwal: "Senin, Rabu, Jumat - 08:00",
     santriList: [
@@ -48,7 +48,7 @@ const myHalaqohData: HalaqohData[] = [
   {
     id: "2",
     nama_halaqoh: "Halaqoh An-Nur",
-    tingkat: "Menengah",
+    tingkat: "Paket B",
     jumlah_santri: 10,
     jadwal: "Selasa, Kamis, Sabtu - 09:00",
     santriList: [
@@ -60,7 +60,7 @@ const myHalaqohData: HalaqohData[] = [
   {
     id: "3",
     nama_halaqoh: "Halaqoh Al-Ikhlas",
-    tingkat: "Lanjutan",
+    tingkat: "Paket C",
     jumlah_santri: 8,
     jadwal: "Senin - Jumat - 07:00",
     santriList: [
