@@ -35,7 +35,7 @@ const myHalaqohData: HalaqohData[] = [
     id: "1",
     nama_halaqoh: "Halaqoh Al-Fatih",
     tingkat: "Paket A",
-    jumlah_santri: 12,
+    jumlah_santri: 13,
     jadwal: "Senin, Rabu, Jumat - 08:00",
     santriList: [
       { id: "s1", nama: "Ahmad Rizki", progress: 45 },
